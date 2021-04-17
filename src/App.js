@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./App.css";
 import TabNav from "./components/TabNav";
 import Tab from "./components/tab";
@@ -17,6 +17,7 @@ class App extends React.Component {
         { id: uuidv4(), text: "bsp" },
       ],
       inpval: "",
+      buttonType: "button",
     };
     this.deleteBin = this.deleteBin.bind(this);
     this.addBin = this.addBin.bind(this);
@@ -25,7 +26,7 @@ class App extends React.Component {
     console.log(id);
     const newList = [];
     this.state.bins.forEach((item) => {
-      if (item.id != id) {
+      if (item.id !== id) {
         newList.push(item);
       }
     });
@@ -36,14 +37,14 @@ class App extends React.Component {
 
   addBin() {
     const bin = this.state.inpval;
-    if (bin == "") return;
+    if (bin === "") return;
     const newList = this.state.bins;
     newList.push({ id: uuidv4(), text: bin });
     this.setState({ bins: newList });
+    this.setState({ inpval: "" });
   }
 
   handleInput = (event) => {
-    console.log("Hi");
     this.setState({ inpval: event.target.value });
   };
 
@@ -68,6 +69,7 @@ class App extends React.Component {
                     type="text"
                     onChange={this.handleInput}
                     className="form-control"
+                    value={this.state.inpval}
                     style={{ width: "auto" }}
                   ></input>
                   <button

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { MdDelete, MdContentCopy } from "react-icons/md";
 import copy from "copy-to-clipboard";
 
