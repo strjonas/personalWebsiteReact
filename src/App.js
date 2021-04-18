@@ -9,19 +9,28 @@ import Pastebins from "./components/Pastebins";
 class App extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       selected: "Pastebin",
-      bins: [
-        { id: uuidv4(), text: "bsp" },
-        { id: uuidv4(), text: "bsp" },
-      ],
+      bins: [],
       inpval: "",
       buttonType: "button",
     };
+    this.getBins();
     this.deleteBin = this.deleteBin.bind(this);
     this.addBin = this.addBin.bind(this);
+    this.getBins = this.getBins.bind(this);
   }
+
+  async getBins() {
+    try {
+      const response = await fetch("http://localhost:5000/bins");
+      const jsonData = await response.json();
+      this.setState({ bins: jsonData });
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+
   deleteBin(id) {
     console.log(id);
     const newList = [];
@@ -30,17 +39,31 @@ class App extends React.Component {
         newList.push(item);
       }
     });
-
     console.log(newList);
     this.setState({ bins: newList });
   }
 
-  addBin() {
+  async addBin(e) {
     const bin = this.state.inpval;
     if (bin === "") return;
     const newList = this.state.bins;
-    newList.push({ id: uuidv4(), text: bin });
+    newList.push({ id: uuidv4(), description: bin });
     this.setState({ bins: newList });
+    const request = async (e) => {
+      e.preventDefault();
+      try {
+        let description = bin;
+        const body = { description };
+        const response = await fetch("http://localhost:5000/bins", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+    await request(e);
     this.setState({ inpval: "" });
   }
 
@@ -49,6 +72,7 @@ class App extends React.Component {
   };
 
   setSelected = (tab) => {
+    this.getBins();
     this.setState({ selected: tab });
   };
   render() {
@@ -98,5 +122,4 @@ class App extends React.Component {
     );
   }
 }
-
 export default App;

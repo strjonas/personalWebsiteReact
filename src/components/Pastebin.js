@@ -4,12 +4,12 @@ import copy from "copy-to-clipboard";
 
 const Pastebin = ({ bin, deleteBin }) => {
   function copyf() {
-    copy(bin.text);
+    copy(bin.description);
   }
   return (
     <div className="container ">
       <div className="row con" style={{ backgroundColor: "#d3d3d3" }}>
-        <p>{bin.text}</p>
+        <p>{bin.description}</p>
         <div>
           <MdContentCopy className="icon-Button" onClick={() => copyf()} />
           <MdDelete className="icon-Button" onClick={() => deleteBin(bin.id)} />
