@@ -2,9 +2,9 @@ import React from "react";
 import "./App.css";
 import TabNav from "./components/TabNav";
 import Tab from "./components/tab";
-import { v4 as uuidv4 } from "uuid";
-
+import NoteHandler from "./noteHandler";
 import Pastebins from "./components/Pastebins";
+import TasksHandler from "./components/TasksHandler";
 
 class App extends React.Component {
   constructor(props) {
@@ -13,6 +13,7 @@ class App extends React.Component {
       selected: "Pastebin",
       bins: [],
       inpval: "",
+
       buttonType: "button",
     };
     this.getBins();
@@ -31,24 +32,31 @@ class App extends React.Component {
     }
   }
 
-  deleteBin(id) {
-    console.log(id);
+  async deleteReq(id) {
+    try {
+      const deleteBin = await fetch(`http://localhost:5000/bins/${id}`, {
+        method: "DELETE",
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async deleteBin(id) {
+    await this.deleteReq(id);
     const newList = [];
     this.state.bins.forEach((item) => {
       if (item.id !== id) {
         newList.push(item);
       }
     });
-    console.log(newList);
     this.setState({ bins: newList });
   }
 
   async addBin(e) {
     const bin = this.state.inpval;
     if (bin === "") return;
-    const newList = this.state.bins;
-    newList.push({ id: uuidv4(), description: bin });
-    this.setState({ bins: newList });
+
     const request = async (e) => {
       e.preventDefault();
       try {
@@ -64,15 +72,20 @@ class App extends React.Component {
       }
     };
     await request(e);
+    await this.getBins();
     this.setState({ inpval: "" });
   }
 
   handleInput = (event) => {
-    this.setState({ inpval: event.target.value });
+    let str = JSON.stringify(event.target.value);
+    if (str.includes("<script>") || str.includes(";")) {
+      this.setState({ inpval: "" });
+    } else {
+      this.setState({ inpval: event.target.value });
+    }
   };
 
   setSelected = (tab) => {
-    this.getBins();
     this.setState({ selected: tab });
   };
   render() {
@@ -111,9 +124,14 @@ class App extends React.Component {
             </div>
           </Tab>
 
-          <Tab isSelected={this.state.selected === "Notes"}>Notes</Tab>
+          <Tab isSelected={this.state.selected === "Notes"}>
+            <NoteHandler />
+          </Tab>
+
           <Tab isSelected={this.state.selected === "Bookmarks"}>Bookmarks</Tab>
-          <Tab isSelected={this.state.selected === "Tasks"}>Tasks</Tab>
+          <Tab isSelected={this.state.selected === "Tasks"}>
+            <TasksHandler />
+          </Tab>
           <Tab isSelected={this.state.selected === "Photo Pastebin"}>
             Photo Pastebin
           </Tab>

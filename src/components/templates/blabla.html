@@ -1,0 +1,23 @@
+
+<html>
+    <body>
+
+        <div class="container-fluid" id="wrapper">
+
+            <div class="row">
+                <div class="col-lg-4 col-lg-offset-4" id="content">
+                    <h2>List</h2>
+                    <ul class="list-group t20">
+                        {% for todo in todos %}
+                        <form action = "/Sel_App_don/{{ todo.text }}">
+                            <li class = "list-group-item"  >
+                                <button type = "submit">{{todo.text}}</button>
+                            </li >
+                        </form >
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

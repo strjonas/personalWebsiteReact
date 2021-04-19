@@ -6,6 +6,10 @@
   font-family: "Poppins", sans-serif;
 }
 
+.Task-Column {
+  border: 1px solid;
+  padding: 10px;
+}
 .inprow {
   display: flex;
   justify-content: space-between;
