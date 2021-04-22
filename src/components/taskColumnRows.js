@@ -1,7 +1,13 @@
 import React from "react";
 import { MdModeEdit } from "react-icons/md";
 
-export default function TaskColumnRows() {
+export default function TaskColumnRows({ title, objectRowCon }) {
+  let icon;
+  let objectRows = objectRowCon;
+
+  objectRows["inhalt"] === ""
+    ? (icon = <div></div>)
+    : (icon = <MdModeEdit className="icon-Button" />);
   return (
     <div
       style={{
@@ -10,8 +16,8 @@ export default function TaskColumnRows() {
         padding: "2px",
       }}
     >
-      <div> content</div>
-      <MdModeEdit className="icon-Button" />
+      <div className="divtextrow">{objectRows["inhalt"]}</div>
+      {icon}
     </div>
   );
 }

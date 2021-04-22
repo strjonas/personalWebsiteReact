@@ -1,5 +1,15 @@
 import React, { Component } from "react";
-import TaskClumnDays from "./TaskClumnDays";
+import DateRows from "./DateRows";
+
+/*
+window.addEventListener("resize", function (e) {
+  document.getElementById("rows1").style.width = window.innerWidth - 80;
+  document.getElementById("rows1").style.height = window.innerHeight * 0.4;
+  document.getElementById("rows2").style.width = window.innerWidth - 100;
+  document.getElementById("rows2").style.height = window.innerHeight * 0.4;
+
+  console.log(e)
+});*/
 
 export class TasksHandler extends Component {
   constructor(props) {
@@ -7,6 +17,7 @@ export class TasksHandler extends Component {
 
     this.state = {};
   }
+
   render() {
     return (
       <div className="main-task-container" style={{ padding: 0, margin: 0 }}>
@@ -14,7 +25,7 @@ export class TasksHandler extends Component {
           className="day-task-container"
           style={{
             width: window.innerWidth,
-            height: window.innerHeight * 0.4,
+            height: window.innerHeight * 0.45,
             margin: "10px",
             paddingBottom: "10px",
             gridTemplateColumns: "repeat(5, 1fr)",
@@ -22,20 +33,17 @@ export class TasksHandler extends Component {
           }}
         >
           <div
+            id="rows2"
             style={{
-              width: window.innerWidth,
-              height: window.innerHeight * 0.4,
+              width: window.innerWidth - 100,
+              height: window.innerHeight * 0.45,
               marginLeft: "40px",
               marginRight: "40px",
               gridTemplateColumns: "repeat(5, 1fr)",
               display: "grid",
             }}
           >
-            <TaskClumnDays />
-            <TaskClumnDays />
-            <TaskClumnDays />
-            <TaskClumnDays />
-            <TaskClumnDays />
+            <DateRows />
           </div>
         </div>
         <div
@@ -51,6 +59,7 @@ export class TasksHandler extends Component {
         </div>
         <div
           className="other-task-container"
+          id="rows1"
           style={{
             width: window.innerWidth - 80,
             height: window.innerHeight * 0.4,

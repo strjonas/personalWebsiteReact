@@ -16,6 +16,12 @@
   padding: 13px;
   padding-bottom: 25px;
 }
+.divtextrow {
+  height: 22px;
+
+  overflow: hidden;
+  white-space: nowrap;
+}
 .TabNav {
   display: flex;
   flex-direction: row;
