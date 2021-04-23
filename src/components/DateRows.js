@@ -37,9 +37,6 @@ export class DateRows extends Component {
         weekDays[d.getDay()];
       result.push(temp);
       temp = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
-      //   this.state.tasks[temp] = [
-      //     { inhalt: "bsp", id: uuidv4(), kategorie: temp, gmacht: "f" },
-      //   ];
     }
     this.state.dates = result;
   }

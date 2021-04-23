@@ -22,27 +22,15 @@ export class TasksHandler extends Component {
     return (
       <div className="main-task-container" style={{ padding: 0, margin: 0 }}>
         <div
-          className="day-task-container"
+          className="day-task-container outerContainer"
           style={{
-            width: window.innerWidth,
-            height: window.innerHeight * 0.45,
             margin: "10px",
             paddingBottom: "10px",
             gridTemplateColumns: "repeat(5, 1fr)",
             display: "grid",
           }}
         >
-          <div
-            id="rows2"
-            style={{
-              width: window.innerWidth - 100,
-              height: window.innerHeight * 0.45,
-              marginLeft: "40px",
-              marginRight: "40px",
-              gridTemplateColumns: "repeat(5, 1fr)",
-              display: "grid",
-            }}
-          >
+          <div id="rows2" className="innerContainer">
             <DateRows />
           </div>
         </div>

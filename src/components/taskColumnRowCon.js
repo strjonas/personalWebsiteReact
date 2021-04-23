@@ -22,10 +22,7 @@ export default function TaskColumnRowCon({ title, objectDays }) {
   }
   return objectRowCon.map((item) => {
     return (
-      <div>
-        <TaskColumnRows key={item["id"]} title={title} objectRowCon={item} />
-        <border></border>
-      </div>
+      <TaskColumnRows key={item["id"]} title={title} objectRowCon={item} />
     );
   });
 }

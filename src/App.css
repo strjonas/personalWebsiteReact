@@ -16,12 +16,7 @@
   padding: 13px;
   padding-bottom: 25px;
 }
-.divtextrow {
-  height: 22px;
 
-  overflow: hidden;
-  white-space: nowrap;
-}
 .TabNav {
   display: flex;
   flex-direction: row;
@@ -49,4 +44,67 @@
   padding: 30px;
   border-radius: 5px;
   background-color: #fff;
+}
+.innerContainer {
+  width: 100%;
+  margin-left: 40px;
+  margin-right: 40px;
+  grid-template-rows: repeat(5, 1fr);
+  display: grid;
+}
+.outerContainer {
+  width: 100%;
+}
+.taskRow {
+  width: 300px;
+}
+
+.textInTaskRow {
+  width: 290px;
+  margin: 2px;
+}
+.divtextrow {
+  height: 22px;
+  width: 260px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+@media screen and (min-width: 1000px) {
+  .innerContainer {
+    width: 100%;
+    margin-left: 30px;
+    margin-right: 30px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    display: grid;
+  }
+  .outerContainer {
+    width: 100%;
+  }
+}
+@media screen and (min-width: 1400px) {
+  .innerContainer {
+    width: 100%;
+    margin-left: 30px;
+    margin-right: 30px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    display: grid;
+  }
+  .outerContainer {
+    width: 100%;
+  }
+}
+@media screen and (min-width: 1750px) {
+  .innerContainer {
+    width: 100%;
+    margin-left: 30px;
+    margin-right: 30px;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+    display: grid;
+  }
+  .outerContainer {
+    width: 100%;
+  }
 }
