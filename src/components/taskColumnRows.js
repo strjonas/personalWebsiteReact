@@ -1,18 +1,52 @@
 import React, { useState } from "react";
-import { MdModeEdit } from "react-icons/md";
+import { MdModeEdit, MdDelete } from "react-icons/md";
 
-export default function TaskColumnRows({ title, objectRowCon }) {
+export default function TaskColumnRows({
+  title,
+  objectRowCon,
+  removeTask,
+  updateTask,
+  toggleDone,
+  addTask,
+}) {
+  let icon;
   let row;
+  let crossedOrNot;
   let objectRows = objectRowCon;
 
   const [val, setVal] = useState([]);
 
   function onTextChange(e) {
     setVal(e.target.value);
-    console.log(e);
   }
   function onLooseFocus(e) {
-    console.log(e);
+    if (e.target.value !== "") {
+      addTask(e, title);
+    }
+  }
+  function donetoggle(e) {
+    toggleDone(e);
+  }
+  function removeTaskhere(e) {
+    removeTask(e);
+  }
+  function updateTaskhere(e) {
+    updateTask(e);
+  }
+  if (!objectRowCon["gmacht"]) {
+    icon = <MdModeEdit onClick={updateTaskhere} className="icon-Button" />;
+    crossedOrNot = (
+      <div onClick={donetoggle} className="divtextrow">
+        {objectRows["inhalt"]}
+      </div>
+    );
+  } else {
+    icon = <MdDelete onClick={removeTaskhere} className="icon-Button" />;
+    crossedOrNot = (
+      <div onClick={donetoggle} className="divtextrow">
+        <del>{objectRows["inhalt"]}</del>
+      </div>
+    );
   }
 
   objectRows["inhalt"] === ""
@@ -27,6 +61,7 @@ export default function TaskColumnRows({ title, objectRowCon }) {
           }}
           type="text"
           value={val}
+          onClick={donetoggle}
           onChange={onTextChange}
           onBlur={onLooseFocus}
         ></input>
@@ -39,8 +74,8 @@ export default function TaskColumnRows({ title, objectRowCon }) {
             padding: "2px",
           }}
         >
-          <div className="divtextrow">{objectRows["inhalt"]}</div>
-          <MdModeEdit className="icon-Button" />
+          {crossedOrNot}
+          {icon}
         </div>
       ));
   return <div className="taskRow">{row}</div>;

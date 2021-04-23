@@ -2,7 +2,14 @@ import React from "react";
 import { MdRepeat } from "react-icons/md";
 import TaskColumnRowCon from "./taskColumnRowCon";
 
-export default function TaskClumnDays({ title, object }) {
+export default function TaskClumnDays({
+  title,
+  object,
+  addTask,
+  updateTask,
+  removeTask,
+  toggleDone,
+}) {
   let objectDays = object;
   var months = [
     "January",
@@ -47,7 +54,14 @@ export default function TaskClumnDays({ title, object }) {
       </div>
 
       <div>
-        <TaskColumnRowCon title={title} objectDays={objectDays} />
+        <TaskColumnRowCon
+          title={title}
+          objectDays={objectDays}
+          removeTask={removeTask}
+          addTask={addTask}
+          updateTask={updateTask}
+          toggleDone={toggleDone}
+        />
       </div>
     </div>
   );

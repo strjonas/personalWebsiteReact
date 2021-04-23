@@ -11,7 +11,9 @@ export class DateRows extends Component {
       dates: [],
     };
     this.getTasks();
+    this.getTasks();
     this.setDates();
+    this.addTask = this.addTask.bind(this);
   }
   setDates() {
     const weekDays = [
@@ -42,12 +44,13 @@ export class DateRows extends Component {
   }
 
   async sortTasks(tasks) {
-    let oTasks = this.state.tasks;
+    let oTasks = {};
+    // let oTasks = this.state.tasks;
+    // console.log(this.state.tasks);
     try {
       tasks.forEach((task) => {
         let temp = task.kategorie;
         if (!oTasks[temp]) {
-          let temp = task.kategorie;
           oTasks[temp] = [task];
         } else {
           let name = task.kategorie;
@@ -59,6 +62,25 @@ export class DateRows extends Component {
     } catch (e) {
       console.log(e);
     }
+    // remove all doubles
+    // let keys = [];
+    // let temp = oTasks;
+    // console.log(temp);
+    // for (const key in temp) {
+    //   temp[key].forEach((task) => {
+    //     if (keys.includes(task.id)) {
+    //       let nexttemp = oTasks[key];
+    //       nexttemp.pop(task);
+    //       oTasks[key] = nexttemp;
+    //     } else {
+    //       console.log(task.id);
+    //       keys.push(task.id);
+    //     }
+    //   });
+    // }
+    // console.log(oTasks);
+    //console.log(oTasks);
+    this.state.tasks = oTasks;
     this.setState((tasks = oTasks));
   }
 
@@ -74,12 +96,58 @@ export class DateRows extends Component {
     }
   }
 
+  async addTask(obj, kategorie) {
+    const task = obj.target.value;
+    const gmacht = "FALSE";
+    let temp =
+      kategorie.split("-")[0] +
+      "-" +
+      kategorie.split("-")[1] +
+      "-" +
+      kategorie.split("-")[2];
+
+    kategorie = temp;
+    const request = async (obj) => {
+      obj.preventDefault();
+      try {
+        let inhalt = task;
+        const body = { kategorie, inhalt, gmacht };
+        const response = await fetch("http://localhost:5000/tasks", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        console.log(response);
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+    await request(obj);
+    await this.getTasks();
+  }
+
+  async removeTask(obj) {
+    console.log(obj);
+  }
+
+  async updateTask(obj) {
+    console.log(obj);
+  }
+
+  async toogleDone(obj) {
+    console.log(obj);
+  }
+
   render() {
     let temp = this.state.tasks;
     return this.state.dates.map((date) => (
       <TaskClumnDays
         key={date}
         title={date}
+        removeTask={this.removeTask}
+        addTask={this.addTask}
+        updateTask={this.updateTask}
+        toggleDone={this.toogleDone}
         object={
           temp[
             date.split("-")[0] +

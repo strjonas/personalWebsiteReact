@@ -63,10 +63,15 @@
   width: 290px;
   margin: 2px;
 }
+::-webkit-scrollbar {
+  display: none;
+}
+
 .divtextrow {
   height: 22px;
   width: 260px;
   overflow: hidden;
+  overflow-x: scroll;
   white-space: nowrap;
 }
 @media screen and (min-width: 1000px) {
