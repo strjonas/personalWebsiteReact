@@ -25,10 +25,10 @@ export default function TaskColumnRows({
     }
   }
   function donetoggle(e) {
-    toggleDone(e);
+    toggleDone(objectRowCon);
   }
   function removeTaskhere(e) {
-    removeTask(e);
+    removeTask(objectRowCon);
   }
   function updateTaskhere(e) {
     updateTask(e);

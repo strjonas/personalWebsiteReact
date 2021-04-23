@@ -14,6 +14,9 @@ export class DateRows extends Component {
     this.getTasks();
     this.setDates();
     this.addTask = this.addTask.bind(this);
+    this.deleteReq = this.deleteReq.bind(this);
+    this.removeTask = this.removeTask.bind(this);
+    this.toogleDone = this.toogleDone.bind(this);
   }
   setDates() {
     const weekDays = [
@@ -43,6 +46,8 @@ export class DateRows extends Component {
     this.state.dates = result;
   }
 
+  async deleteReq(id) {}
+
   async sortTasks(tasks) {
     let oTasks = {};
     // let oTasks = this.state.tasks;
@@ -62,24 +67,6 @@ export class DateRows extends Component {
     } catch (e) {
       console.log(e);
     }
-    // remove all doubles
-    // let keys = [];
-    // let temp = oTasks;
-    // console.log(temp);
-    // for (const key in temp) {
-    //   temp[key].forEach((task) => {
-    //     if (keys.includes(task.id)) {
-    //       let nexttemp = oTasks[key];
-    //       nexttemp.pop(task);
-    //       oTasks[key] = nexttemp;
-    //     } else {
-    //       console.log(task.id);
-    //       keys.push(task.id);
-    //     }
-    //   });
-    // }
-    // console.log(oTasks);
-    //console.log(oTasks);
     this.state.tasks = oTasks;
     this.setState((tasks = oTasks));
   }
@@ -126,16 +113,43 @@ export class DateRows extends Component {
     await this.getTasks();
   }
 
-  async removeTask(obj) {
-    console.log(obj);
+  async removeTask(id) {
+    try {
+      const deleteTask = await fetch(
+        `http://localhost:5000/tasks/${id["id"]}`,
+        {
+          method: "DELETE",
+        }
+      );
+    } catch (err) {
+      console.error(err);
+    }
+    await this.getTasks();
   }
 
   async updateTask(obj) {
     console.log(obj);
+    //einmal update fuer inhalt und einmal wenn es gemacht/ nicht gemacht ist
   }
 
   async toogleDone(obj) {
-    console.log(obj);
+    let gmacht = obj.gmacht;
+    let param;
+    gmacht ? (param = "FALSE") : (param = "TRUE");
+    const body = { param };
+    try {
+      const response = await fetch(
+        `http://localhost:5000/tasks/state/${obj["id"]}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      );
+    } catch (error) {
+      console.error(error.message);
+    }
+    await this.getTasks();
   }
 
   render() {
