@@ -7,6 +7,7 @@ export default function TaskClumnDays({
   object,
   addTask,
   updateTask,
+  reorderTasks,
   removeTask,
   toggleDone,
 }) {
@@ -61,6 +62,7 @@ export default function TaskClumnDays({
           addTask={addTask}
           updateTask={updateTask}
           toggleDone={toggleDone}
+          reorderTasks={reorderTasks}
         />
       </div>
     </div>

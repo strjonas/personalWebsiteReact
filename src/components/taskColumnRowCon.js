@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import TaskColumnRows from "./taskColumnRows";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { v4 as uuidv4 } from "uuid";
@@ -9,6 +9,7 @@ export default function TaskColumnRowCon({
   removeTask,
   updateTask,
   addTask,
+  reorderTasks,
   toggleDone,
 }) {
   let temp = 0;
@@ -27,17 +28,53 @@ export default function TaskColumnRowCon({
       gmacht: "",
     });
   }
-  return objectRowCon.map((item) => {
-    return (
-      <TaskColumnRows
-        key={item["id"]}
-        title={title}
-        objectRowCon={item}
-        removeTask={removeTask}
-        addTask={addTask}
-        updateTask={updateTask}
-        toggleDone={toggleDone}
-      />
-    );
-  });
+
+  function handleOnDragEnd(result) {
+    if (!result.destination) return;
+    reorderTasks(result, objectRowCon);
+  }
+
+  return (
+    <DragDropContext onDragEnd={handleOnDragEnd}>
+      <Droppable droppableId="tasks">
+        {(provided) => (
+          <ul
+            style={{ margin: "0px", padding: "0px" }}
+            className="tasks"
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+          >
+            {objectRowCon.map((item, index) => {
+              return (
+                <Draggable
+                  key={item["id"]}
+                  draggableId={item["id"].toString()}
+                  index={index}
+                >
+                  {(provided) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      <TaskColumnRows
+                        index={index}
+                        title={title}
+                        objectRowCon={item}
+                        removeTask={removeTask}
+                        addTask={addTask}
+                        updateTask={updateTask}
+                        toggleDone={toggleDone}
+                      />
+                    </div>
+                  )}
+                </Draggable>
+              );
+            })}
+            {provided.placeholder}
+          </ul>
+        )}
+      </Droppable>
+    </DragDropContext>
+  );
 }

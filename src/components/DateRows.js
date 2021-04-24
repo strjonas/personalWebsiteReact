@@ -17,6 +17,7 @@ export class DateRows extends Component {
     this.removeTask = this.removeTask.bind(this);
     this.toogleDone = this.toogleDone.bind(this);
     this.updateTask = this.updateTask.bind(this);
+    this.reorderTasks = this.reorderTasks.bind(this);
   }
   setDates() {
     const weekDays = [
@@ -48,8 +49,6 @@ export class DateRows extends Component {
 
   async sortTasks(tasks) {
     let oTasks = {};
-    // let oTasks = this.state.tasks;
-    // console.log(this.state.tasks);
     try {
       tasks.forEach((task) => {
         let temp = task.kategorie;
@@ -124,9 +123,18 @@ export class DateRows extends Component {
     await this.getTasks();
   }
 
-  async updateTask(obj, newInhalt) {
-    console.log(obj, newInhalt);
+  async reorderTasks(result, obj) {
+    //await this.getTasks();
+    return;
 
+    // const items = Array.from(tasks);
+    // console.log(items);
+    // const [reorderedItem] = items.splice(result.source.index, 1);
+    // items.splice(result.destination.index, 0, reorderedItem);
+    // return;
+  }
+
+  async updateTask(obj, newInhalt) {
     try {
       const body = { newInhalt };
       const response = await fetch(`http://localhost:5000/tasks/${obj["id"]}`, {
@@ -172,6 +180,7 @@ export class DateRows extends Component {
         addTask={this.addTask}
         updateTask={this.updateTask}
         toggleDone={this.toogleDone}
+        reorderTasks={this.reorderTasks}
         object={
           temp[
             date.split("-")[0] +
