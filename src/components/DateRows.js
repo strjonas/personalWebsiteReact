@@ -14,22 +14,22 @@ export class DateRows extends Component {
     this.getTasks();
     this.setDates();
     this.addTask = this.addTask.bind(this);
-    this.deleteReq = this.deleteReq.bind(this);
     this.removeTask = this.removeTask.bind(this);
     this.toogleDone = this.toogleDone.bind(this);
+    this.updateTask = this.updateTask.bind(this);
   }
   setDates() {
     const weekDays = [
+      "Sunday",
       "Monday",
       "Tuesday",
       "Wednesday",
       "Thursday",
       "Friday",
       "Saturday",
-      "Sunday",
     ];
     var result = [];
-    for (var i = 0; i < 5; i++) {
+    for (var i = -1; i < 4; i++) {
       var d = new Date();
       d.setDate(d.getDate() + i);
       let temp =
@@ -45,8 +45,6 @@ export class DateRows extends Component {
     }
     this.state.dates = result;
   }
-
-  async deleteReq(id) {}
 
   async sortTasks(tasks) {
     let oTasks = {};
@@ -104,7 +102,6 @@ export class DateRows extends Component {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
         });
-        console.log(response);
       } catch (err) {
         console.error(err.message);
       }
@@ -127,9 +124,22 @@ export class DateRows extends Component {
     await this.getTasks();
   }
 
-  async updateTask(obj) {
-    console.log(obj);
-    //einmal update fuer inhalt und einmal wenn es gemacht/ nicht gemacht ist
+  async updateTask(obj, newInhalt) {
+    console.log(obj, newInhalt);
+
+    try {
+      const body = { newInhalt };
+      const response = await fetch(`http://localhost:5000/tasks/${obj["id"]}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      console.log(response);
+    } catch (err) {
+      console.error(err.message);
+    }
+
+    await this.getTasks();
   }
 
   async toogleDone(obj) {

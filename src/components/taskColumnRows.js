@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { MdModeEdit, MdDelete } from "react-icons/md";
+import EditTodo from "./editTask";
 
 export default function TaskColumnRows({
   title,
@@ -30,11 +31,16 @@ export default function TaskColumnRows({
   function removeTaskhere(e) {
     removeTask(objectRowCon);
   }
-  function updateTaskhere(e) {
-    updateTask(e);
-  }
+  // icon = <MdModeEdit onClick={updateTaskhere} className="icon-Button" />;
+  //   crossedOrNot = (
+  //     <div onClick={donetoggle} className="divtextrow">
+  //       {objectRows["inhalt"]}
+  //     </div>
+  //   );
+  if (updateTask === null) updateTask = undefined;
+  if (objectRowCon === null) objectRowCon = undefined;
   if (!objectRowCon["gmacht"]) {
-    icon = <MdModeEdit onClick={updateTaskhere} className="icon-Button" />;
+    icon = <EditTodo obj={objectRowCon} updateTask={updateTask} />;
     crossedOrNot = (
       <div onClick={donetoggle} className="divtextrow">
         {objectRows["inhalt"]}
@@ -78,5 +84,9 @@ export default function TaskColumnRows({
           {icon}
         </div>
       ));
-  return <div className="taskRow">{row}</div>;
+  return (
+    <Fragment>
+      <div className="taskRow">{row}</div>
+    </Fragment>
+  );
 }
