@@ -32,12 +32,7 @@ export default function TaskColumnRows({
   function removeTaskhere(e) {
     removeTask(objectRowCon);
   }
-  // icon = <MdModeEdit onClick={updateTaskhere} className="icon-Button" />;
-  //   crossedOrNot = (
-  //     <div onClick={donetoggle} className="divtextrow">
-  //       {objectRows["inhalt"]}
-  //     </div>
-  //   );
+
   if (updateTask === null) updateTask = undefined;
   if (objectRowCon === null) objectRowCon = undefined;
   if (!objectRowCon["gmacht"]) {
@@ -68,7 +63,6 @@ export default function TaskColumnRows({
           }}
           type="text"
           value={val}
-          onClick={donetoggle}
           onChange={onTextChange}
           onBlur={onLooseFocus}
         ></input>

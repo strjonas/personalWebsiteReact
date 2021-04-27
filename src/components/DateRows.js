@@ -1,6 +1,7 @@
 import TaskClumnDays from "./TaskClumnDays";
 import React, { Component } from "react";
-import { v4 as uuidv4 } from "uuid";
+import TaskColumnOthers from "./TaskClumnOthers";
+import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
 
 export class DateRows extends Component {
   constructor(props) {
@@ -9,6 +10,8 @@ export class DateRows extends Component {
     this.state = {
       tasks: {},
       dates: [],
+      otherCats: [],
+      datumVerschiebung: -1,
     };
 
     this.setDates();
@@ -19,17 +22,30 @@ export class DateRows extends Component {
     this.updateTask = this.updateTask.bind(this);
     this.reorderTasks = this.reorderTasks.bind(this);
     this.getOtherCats = this.getOtherCats.bind(this);
+    this.rightClick = this.rightClick.bind(this);
+    this.leftClick = this.leftClick.bind(this);
+  }
+
+  async updateDateShift(val) {
+    // val is passed by the arrows and is either 1 or -1
+    let temp = this.state.datumVerschiebung + val;
+    this.state.datumVerschiebung = temp;
+    this.setState({ datumVerschiebung: temp });
+    this.setDates();
+    this.getOtherCats();
   }
 
   async getOtherCats() {
-    let task;
     await this.getTasks();
-    let temp = Array.from(this.state.tasks);
-
-    temp.forEach((task) => {
-      console.log(task.key);
-    });
-    console.log(temp);
+    let temp = this.state.tasks;
+    let cats = [];
+    for (let key in temp) {
+      if (!key.includes("-") && key !== "null") {
+        cats.push(key);
+      }
+    }
+    this.state.otherCats = cats;
+    this.setState({ otherCats: cats });
   }
   setDates() {
     const weekDays = [
@@ -42,7 +58,8 @@ export class DateRows extends Component {
       "Saturday",
     ];
     var result = [];
-    for (var i = -1; i < 4; i++) {
+    var dV = this.state.datumVerschiebung;
+    for (var i = dV; i < 5 + dV; i++) {
       var d = new Date();
       d.setDate(d.getDate() + i);
       let temp =
@@ -191,19 +208,22 @@ export class DateRows extends Component {
     await this.getTasks();
   }
 
+  leftClick() {
+    this.updateDateShift(-1);
+  }
+  rightClick() {
+    this.updateDateShift(1);
+  }
+
   render() {
     let temp = this.state.tasks;
     return (
       <div className="main-task-container" style={{ padding: 0, margin: 0 }}>
-        <div
-          className="day-task-container "
-          style={{
-            margin: "10px",
-            paddingBottom: "10px",
-            gridTemplateColumns: "repeat(5, 1fr)",
-            display: "grid",
-          }}
-        >
+        <div className="date-row-main-div">
+          <div onClick={this.leftClick} className="arrow-icon-container">
+            <MdKeyboardArrowLeft className="arrow-icons" />
+          </div>
+
           <div id="rows2" className="innerContainer">
             {this.state.dates.map((date) => (
               <TaskClumnDays
@@ -226,7 +246,11 @@ export class DateRows extends Component {
               />
             ))}
           </div>
+          <div onClick={this.rightClick} className="arrow-icon-container">
+            <MdKeyboardArrowRight className="arrow-icons" />
+          </div>
         </div>
+
         <div
           className="middel-task-toolbar"
           style={{
@@ -238,19 +262,19 @@ export class DateRows extends Component {
         >
           toolbar
         </div>
-        <div
-          className="other-task-container"
-          id="rows1"
-          style={{
-            width: window.innerWidth - 80,
-            height: window.innerHeight * 0.4,
-            margin: "10px",
-            paddingTop: "10px",
-          }}
-        >
-          {
-            // map other kategories
-          }
+        <div className="innerContainer" id="rows1">
+          {this.state.otherCats.map((cat) => (
+            <TaskColumnOthers
+              key={cat}
+              title={cat}
+              removeTask={this.removeTask}
+              addTask={this.addTask}
+              updateTask={this.updateTask}
+              toggleDone={this.toogleDone}
+              reorderTasks={this.reorderTasks}
+              object={temp[cat]}
+            />
+          ))}
         </div>
       </div>
     );

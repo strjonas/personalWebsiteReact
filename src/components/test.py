@@ -1,20 +1,17 @@
-
-from flask import Flask, render_template, url_for, request, redirect, send_from_directory, session, g, abort, current_app as app, flash
-
-app = Flask(__name__)
+import win32com.client
+import os.path
 
 
-@app.route('/')
-def App_don():
-    Approval_don = [{"text": "hallo"}]
-    print(Approval_don)
-    return render_template('blabla.html', todos=Approval_don)
+Outlook = win32com.client.Dispatch("Outlook.Application")
+olNs = Outlook.GetNamespace("MAPI")
+Inbox = olNs.GetDefaultFolder(6)
+
+Filtermail = "[SenderEmailAddress] = 'xxx@yyy.com'"
+
+Items = Inbox.Items.Restrict(Filtermail)
+Item = Items.GetFirst()
 
 
-@app.route('/Sel_App_don/<string:name>')
-def Sel_App_don(name):
-    if name:
-        return render_template('new.html', var=name)
-
-
-app.run(debug=True)
+for attachment in Items.Attachments:
+    print(attachment.FileName)
+    #attachment.SaveAsFile(os.getcwd() + '\\Mail\\' + 'zzzz.xlsx')

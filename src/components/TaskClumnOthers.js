@@ -10,6 +10,7 @@ export default function TaskColumnOthers({
   removeTask,
   toggleDone,
 }) {
+  const objectDays = object;
   return (
     <div
       className="Task-Column"
@@ -18,7 +19,15 @@ export default function TaskColumnOthers({
       }}
     >
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <h1>{title}</h1>
+        <div
+          style={{
+            fontSize: "20px",
+            textTransform: "uppercase",
+            paddingBottom: "5px",
+          }}
+        >
+          {title}
+        </div>
       </div>
 
       <div>

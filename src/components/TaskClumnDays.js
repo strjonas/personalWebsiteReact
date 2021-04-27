@@ -1,5 +1,4 @@
 import React from "react";
-import { MdRepeat } from "react-icons/md";
 import TaskColumnRowCon from "./taskColumnRowCon";
 
 export default function TaskClumnDays({
@@ -39,11 +38,14 @@ export default function TaskClumnDays({
       <div style={{ display: "flex", justifyContent: "center" }}>
         <div
           style={{
-            display: "grid",
-            gridTemplateRows: "repeat(2, 1fr)",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
           }}
         >
-          <div style={{ fontSize: "20px" }}>{title.split("-")[3]} </div>
+          <div style={{ fontSize: "20px", textTransform: "uppercase" }}>
+            {title.split("-")[3]}{" "}
+          </div>
           <div style={{ fontSize: "11px" }}>
             {title.split("-")[2] +
               "." +

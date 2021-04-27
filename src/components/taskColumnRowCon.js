@@ -19,14 +19,22 @@ export default function TaskColumnRowCon({
   } catch (err) {
     objectRowCon = [];
   }
-
-  for (let i = temp; i < 11; i++) {
+  if (temp >= 11) {
     objectRowCon.push({
       id: uuidv4(),
       kategorie: "ff",
       inhalt: "",
       gmacht: "",
     });
+  } else {
+    for (let i = temp; i < 11; i++) {
+      objectRowCon.push({
+        id: uuidv4(),
+        kategorie: "ff",
+        inhalt: "",
+        gmacht: "",
+      });
+    }
   }
 
   function handleOnDragEnd(result) {

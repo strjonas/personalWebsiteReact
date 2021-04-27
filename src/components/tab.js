@@ -6,7 +6,7 @@ class Tab extends React.Component {
       return (
         <div
           style={{
-            marginTop: "20px",
+            marginTop: "10px",
           }}
         >
           {this.props.children}
