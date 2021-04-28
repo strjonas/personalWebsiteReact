@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import TaskColumnRows from "./taskColumnRows";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { v4 as uuidv4 } from "uuid";
@@ -14,11 +14,29 @@ export default function TaskColumnRowCon({
 }) {
   let temp = 0;
   let objectRowCon = objectDays;
+  if (objectRowCon !== undefined) {
+    console.log(objectRowCon);
+    for (let item in objectRowCon) {
+      console.log(objectRowCon[item]);
+      if (objectRowCon[item].inhalt === "") {
+        console.log("did");
+        objectRowCon.pop(objectRowCon[item]);
+      }
+    }
+    console.log(objectRowCon);
+  }
+
   try {
     temp = objectRowCon.length;
+    for (let item in objectRowCon) {
+      if (typeof objectRowCon[item].id !== "number") {
+        objectRowCon.pop(objectRowCon[item]);
+      }
+    }
   } catch (err) {
     objectRowCon = [];
   }
+  temp = objectRowCon.length;
   if (temp >= 11) {
     objectRowCon.push({
       id: uuidv4(),

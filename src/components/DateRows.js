@@ -2,6 +2,7 @@ import TaskClumnDays from "./TaskClumnDays";
 import React, { Component } from "react";
 import TaskColumnOthers from "./TaskClumnOthers";
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
+import AddCatModal from "./addCatModal";
 
 export class DateRows extends Component {
   constructor(props) {
@@ -12,6 +13,7 @@ export class DateRows extends Component {
       dates: [],
       otherCats: [],
       datumVerschiebung: -1,
+      othersVerschiebung: 0,
     };
 
     this.setDates();
@@ -24,6 +26,10 @@ export class DateRows extends Component {
     this.getOtherCats = this.getOtherCats.bind(this);
     this.rightClick = this.rightClick.bind(this);
     this.leftClick = this.leftClick.bind(this);
+    this.rightClickothers = this.rightClickothers.bind(this);
+    this.leftClickothers = this.leftClickothers.bind(this);
+    this.addOtherCat = this.addOtherCat.bind(this);
+    this.deletekategorie = this.deletekategorie.bind(this);
   }
 
   async updateDateShift(val) {
@@ -32,7 +38,7 @@ export class DateRows extends Component {
     this.state.datumVerschiebung = temp;
     this.setState({ datumVerschiebung: temp });
     this.setDates();
-    this.getOtherCats();
+    this.getTasks();
   }
 
   async getOtherCats() {
@@ -44,8 +50,19 @@ export class DateRows extends Component {
         cats.push(key);
       }
     }
-    this.state.otherCats = cats;
-    this.setState({ otherCats: cats });
+    temp = [];
+
+    for (
+      let i = this.state.othersVerschiebung;
+      i < this.state.othersVerschiebung + 5;
+      i++
+    ) {
+      if (cats[i] !== undefined) {
+        temp.push(cats[i]);
+      }
+    }
+    this.state.otherCats = temp;
+    this.setState({ otherCats: temp });
   }
   setDates() {
     const weekDays = [
@@ -118,6 +135,10 @@ export class DateRows extends Component {
       kategorie.split("-")[1] +
       "-" +
       kategorie.split("-")[2];
+
+    if (temp.includes("undefined")) {
+      temp = temp.split("-")[0];
+    }
 
     kategorie = temp;
     const request = async (obj) => {
@@ -208,11 +229,55 @@ export class DateRows extends Component {
     await this.getTasks();
   }
 
+  async deletekategorie(kategorie) {
+    try {
+      const body = { kategorie };
+      await fetch(`http://localhost:5000/all/tasks`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      await this.getOtherCats();
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
   leftClick() {
     this.updateDateShift(-1);
   }
   rightClick() {
     this.updateDateShift(1);
+  }
+  updateDateShiftothers(val) {
+    if (val === -1 && this.state.othersVerschiebung === 0) return;
+    this.state.othersVerschiebung = this.state.othersVerschiebung + val;
+    this.getOtherCats();
+  }
+  leftClickothers() {
+    this.updateDateShiftothers(-1);
+  }
+  rightClickothers() {
+    this.updateDateShiftothers(1);
+  }
+
+  async addOtherCat(kategorie) {
+    const request = async () => {
+      try {
+        let inhalt = "";
+        let gmacht = false;
+        const body = { kategorie, inhalt, gmacht };
+        const response = await fetch("http://localhost:5000/tasks", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+    await request();
+    await this.getOtherCats();
   }
 
   render() {
@@ -254,27 +319,46 @@ export class DateRows extends Component {
         <div
           className="middel-task-toolbar"
           style={{
-            paddingBottom: "10px",
-            paddingTop: "10px",
-            paddingLeft: "10px",
+            padding: "10px",
             backgroundColor: "#d3d3d4",
           }}
         >
-          toolbar
+          <div className="toolbar-div">
+            <div>toolbar</div>
+            <AddCatModal
+              obj={{ id: 10, inhalt: "" }}
+              addCat={this.addOtherCat}
+            />
+          </div>
         </div>
         <div className="innerContainer" id="rows1">
-          {this.state.otherCats.map((cat) => (
-            <TaskColumnOthers
-              key={cat}
-              title={cat}
-              removeTask={this.removeTask}
-              addTask={this.addTask}
-              updateTask={this.updateTask}
-              toggleDone={this.toogleDone}
-              reorderTasks={this.reorderTasks}
-              object={temp[cat]}
-            />
-          ))}
+          <div className="date-row-main-div">
+            <div
+              onClick={this.leftClickothers}
+              className="arrow-icon-container"
+            >
+              <MdKeyboardArrowLeft className="arrow-icons" />
+            </div>
+            {this.state.otherCats.map((cat) => (
+              <TaskColumnOthers
+                key={cat}
+                deletekategorie={this.deletekategorie}
+                title={cat}
+                removeTask={this.removeTask}
+                addTask={this.addTask}
+                updateTask={this.updateTask}
+                toggleDone={this.toogleDone}
+                reorderTasks={this.reorderTasks}
+                object={temp[cat]}
+              />
+            ))}
+            <div
+              onClick={this.rightClickothers}
+              className="arrow-icon-container"
+            >
+              <MdKeyboardArrowRight className="arrow-icons" />
+            </div>
+          </div>
         </div>
       </div>
     );

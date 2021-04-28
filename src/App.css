@@ -9,6 +9,7 @@
 .Task-Column {
   border: 1px solid;
   padding: 10px;
+  width: 340px;
 }
 .inprow {
   display: flex;
@@ -67,6 +68,13 @@
   height: 70px;
   width: 30px;
   margin: 3px;
+}
+
+.toolbar-div {
+  display: flex;
+  justify-content: space-between;
+  margin: 5px;
+  padding-right: 20px;
 }
 
 .date-row-main-div {

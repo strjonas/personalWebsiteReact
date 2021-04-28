@@ -1,5 +1,5 @@
 import React, { useState, Fragment } from "react";
-import { MdModeEdit, MdDelete } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import EditTodo from "./editTask";
 import { Draggable } from "react-beautiful-dnd";
 
