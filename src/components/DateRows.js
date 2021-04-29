@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import TaskColumnOthers from "./TaskClumnOthers";
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
 import AddCatModal from "./addCatModal";
+import { DragDropContext } from "react-beautiful-dnd";
 
 export class DateRows extends Component {
   constructor(props) {
@@ -30,6 +31,9 @@ export class DateRows extends Component {
     this.leftClickothers = this.leftClickothers.bind(this);
     this.addOtherCat = this.addOtherCat.bind(this);
     this.deletekategorie = this.deletekategorie.bind(this);
+    this.handleOnDragEnd = this.handleOnDragEnd.bind(this);
+    this.handleOnDragEndOthers = this.handleOnDragEndOthers.bind(this);
+    this.changeCat = this.changeCat.bind(this);
   }
 
   async updateDateShift(val) {
@@ -103,7 +107,10 @@ export class DateRows extends Component {
         } else {
           let name = task.kategorie;
           let temp = oTasks[name];
-          temp.push(task);
+          if (task.inhalt !== "") {
+            temp.push(task);
+          }
+
           oTasks[name] = temp;
         }
       });
@@ -146,7 +153,7 @@ export class DateRows extends Component {
       try {
         let inhalt = task;
         const body = { kategorie, inhalt, gmacht };
-        const response = await fetch("http://localhost:5000/tasks", {
+        await fetch("http://localhost:5000/tasks", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
@@ -173,7 +180,30 @@ export class DateRows extends Component {
     await this.getTasks();
   }
 
-  async reorderTasks(result, obj) {
+  async changeCat(result) {
+    let kat = result.destination.droppableId;
+    let newkat =
+      kat.split("-")[0] + "-" + kat.split("-")[1] + "-" + kat.split("-")[2];
+    let id = result.draggableId;
+    try {
+      let body = { newkat: newkat, id: id };
+      await fetch(`http://localhost:5000/kategorie/tasks`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    await this.getTasks();
+  }
+
+  async reorderTasks(result) {
+    let obj;
+    let kat = result.source.droppableId;
+    let temp =
+      kat.split("-")[0] + "-" + kat.split("-")[1] + "-" + kat.split("-")[2];
+    obj = this.state.tasks[temp];
     let os = obj[result.source.index];
     let od = obj[result.destination.index];
     if (result.source.index === result.destination.index) return;
@@ -182,7 +212,7 @@ export class DateRows extends Component {
     }
     try {
       let body = { os: os, od: od };
-      const response = await fetch(`http://localhost:5000/switch/tasks`, {
+      await fetch(`http://localhost:5000/switch/tasks`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -201,7 +231,6 @@ export class DateRows extends Component {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      console.log(response);
     } catch (err) {
       console.error(err.message);
     }
@@ -215,14 +244,11 @@ export class DateRows extends Component {
     gmacht ? (param = "FALSE") : (param = "TRUE");
     const body = { param };
     try {
-      const response = await fetch(
-        `http://localhost:5000/tasks/state/${obj["id"]}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        }
-      );
+      await fetch(`http://localhost:5000/tasks/state/${obj["id"]}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
     } catch (error) {
       console.error(error.message);
     }
@@ -267,7 +293,7 @@ export class DateRows extends Component {
         let inhalt = "";
         let gmacht = false;
         const body = { kategorie, inhalt, gmacht };
-        const response = await fetch("http://localhost:5000/tasks", {
+        await fetch("http://localhost:5000/tasks", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
@@ -280,6 +306,27 @@ export class DateRows extends Component {
     await this.getOtherCats();
   }
 
+  handleOnDragEnd(result) {
+    if (!result.destination) return;
+    if (result.destination.droppableId == result.source.droppableId) {
+      this.reorderTasks(result);
+    } else {
+      this.changeCat(result);
+    }
+  }
+
+  async handleOnDragEndOthers(result) {
+    if (!result.destination) return;
+    console.log("salut");
+    if (result.destination.droppableId == result.source.droppableId) {
+      await this.reorderTasks(result);
+    } else {
+      await this.changeCat(result);
+    }
+    console.log("bye");
+    await this.getOtherCats();
+  }
+
   render() {
     let temp = this.state.tasks;
     return (
@@ -288,29 +335,30 @@ export class DateRows extends Component {
           <div onClick={this.leftClick} className="arrow-icon-container">
             <MdKeyboardArrowLeft className="arrow-icons" />
           </div>
-
-          <div id="rows2" className="innerContainer">
-            {this.state.dates.map((date) => (
-              <TaskClumnDays
-                key={date}
-                title={date}
-                removeTask={this.removeTask}
-                addTask={this.addTask}
-                updateTask={this.updateTask}
-                toggleDone={this.toogleDone}
-                reorderTasks={this.reorderTasks}
-                object={
-                  temp[
-                    date.split("-")[0] +
-                      "-" +
-                      date.split("-")[1] +
-                      "-" +
-                      date.split("-")[2]
-                  ]
-                }
-              />
-            ))}
-          </div>
+          <DragDropContext onDragEnd={this.handleOnDragEnd}>
+            <div id="rows2" className="innerContainer">
+              {this.state.dates.map((date) => (
+                <TaskClumnDays
+                  key={date}
+                  title={date}
+                  removeTask={this.removeTask}
+                  addTask={this.addTask}
+                  updateTask={this.updateTask}
+                  toggleDone={this.toogleDone}
+                  reorderTasks={this.reorderTasks}
+                  object={
+                    temp[
+                      date.split("-")[0] +
+                        "-" +
+                        date.split("-")[1] +
+                        "-" +
+                        date.split("-")[2]
+                    ]
+                  }
+                />
+              ))}
+            </div>
+          </DragDropContext>
           <div onClick={this.rightClick} className="arrow-icon-container">
             <MdKeyboardArrowRight className="arrow-icons" />
           </div>
@@ -339,19 +387,21 @@ export class DateRows extends Component {
             >
               <MdKeyboardArrowLeft className="arrow-icons" />
             </div>
-            {this.state.otherCats.map((cat) => (
-              <TaskColumnOthers
-                key={cat}
-                deletekategorie={this.deletekategorie}
-                title={cat}
-                removeTask={this.removeTask}
-                addTask={this.addTask}
-                updateTask={this.updateTask}
-                toggleDone={this.toogleDone}
-                reorderTasks={this.reorderTasks}
-                object={temp[cat]}
-              />
-            ))}
+            <DragDropContext onDragEnd={this.handleOnDragEndOthers}>
+              {this.state.otherCats.map((cat) => (
+                <TaskColumnOthers
+                  key={cat}
+                  deletekategorie={this.deletekategorie}
+                  title={cat}
+                  removeTask={this.removeTask}
+                  addTask={this.addTask}
+                  updateTask={this.updateTask}
+                  toggleDone={this.toogleDone}
+                  reorderTasks={this.reorderTasks}
+                  object={temp[cat]}
+                />
+              ))}
+            </DragDropContext>
             <div
               onClick={this.rightClickothers}
               className="arrow-icon-container"
