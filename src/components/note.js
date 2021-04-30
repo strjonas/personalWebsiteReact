@@ -8,7 +8,7 @@ const Note = ({ note, deleteNote }) => {
   }
   return (
     <div className="container ">
-      <div className="row con" style={{ backgroundColor: "#d3d3d3" }}>
+      <div className="row con">
         <p>{note.description}</p>
         <div>
           <MdContentCopy className="icon-Button" onClick={() => copyf()} />

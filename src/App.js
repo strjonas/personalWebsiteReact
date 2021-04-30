@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import "./index.scss";
 import TabNav from "./components/TabNav";
 import Tab from "./components/tab";
 import NoteHandler from "./noteHandler";

@@ -8,7 +8,7 @@ const Pastebin = ({ bin, deleteBin }) => {
   }
   return (
     <div className="container ">
-      <div className="row con" style={{ backgroundColor: "#d3d3d3" }}>
+      <div className="row con">
         <p>{bin.description}</p>
         <div>
           <MdContentCopy className="icon-Button" onClick={() => copyf()} />
@@ -19,8 +19,5 @@ const Pastebin = ({ bin, deleteBin }) => {
     </div>
   );
 };
-
-// elements required: acutal Text, delete, copy, update
-// elements are orderd from important to not important (left to right), if there is not enough space, the less important components will disappear
 
 export default Pastebin;
