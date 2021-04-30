@@ -34,7 +34,7 @@ class App extends React.Component {
 
   async deleteReq(id) {
     try {
-      const deleteBin = await fetch(`http://localhost:5000/bins/${id}`, {
+      await fetch(`http://localhost:5000/bins/${id}`, {
         method: "DELETE",
       });
     } catch (err) {
@@ -62,7 +62,7 @@ class App extends React.Component {
       try {
         let description = bin;
         const body = { description };
-        const response = await fetch("http://localhost:5000/bins", {
+        await fetch("http://localhost:5000/bins", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),

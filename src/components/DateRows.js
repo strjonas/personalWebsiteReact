@@ -15,6 +15,7 @@ export class DateRows extends Component {
       otherCats: [],
       datumVerschiebung: -1,
       othersVerschiebung: 0,
+      CatList: [],
     };
 
     this.setDates();
@@ -34,6 +35,7 @@ export class DateRows extends Component {
     this.handleOnDragEnd = this.handleOnDragEnd.bind(this);
     this.handleOnDragEndOthers = this.handleOnDragEndOthers.bind(this);
     this.changeCat = this.changeCat.bind(this);
+    this.getCatList = this.getCatList.bind(this);
   }
 
   async updateDateShift(val) {
@@ -47,22 +49,16 @@ export class DateRows extends Component {
 
   async getOtherCats() {
     await this.getTasks();
-    let temp = this.state.tasks;
-    let cats = [];
-    for (let key in temp) {
-      if (!key.includes("-") && key !== "null") {
-        cats.push(key);
-      }
-    }
-    temp = [];
-
+    let tempq = await this.getCatList();
+    tempq = tempq.split("/");
+    let temp = [];
     for (
       let i = this.state.othersVerschiebung;
       i < this.state.othersVerschiebung + 5;
       i++
     ) {
-      if (cats[i] !== undefined) {
-        temp.push(cats[i]);
+      if (tempq[i] !== undefined && !temp.includes(tempq[i])) {
+        temp.push(tempq[i]);
       }
     }
     this.state.otherCats = temp;
@@ -168,12 +164,9 @@ export class DateRows extends Component {
 
   async removeTask(id) {
     try {
-      const deleteTask = await fetch(
-        `http://localhost:5000/tasks/${id["id"]}`,
-        {
-          method: "DELETE",
-        }
-      );
+      await fetch(`http://localhost:5000/tasks/${id["id"]}`, {
+        method: "DELETE",
+      });
     } catch (err) {
       console.error(err);
     }
@@ -184,6 +177,9 @@ export class DateRows extends Component {
     let kat = result.destination.droppableId;
     let newkat =
       kat.split("-")[0] + "-" + kat.split("-")[1] + "-" + kat.split("-")[2];
+    if (newkat.includes("undefined")) {
+      newkat = newkat.split("-")[0];
+    }
     let id = result.draggableId;
     try {
       let body = { newkat: newkat, id: id };
@@ -204,9 +200,11 @@ export class DateRows extends Component {
     let temp =
       kat.split("-")[0] + "-" + kat.split("-")[1] + "-" + kat.split("-")[2];
     obj = this.state.tasks[temp];
+    if (obj === undefined) return;
     let os = obj[result.source.index];
     let od = obj[result.destination.index];
     if (result.source.index === result.destination.index) return;
+    if (os === undefined || od === undefined) return;
     if (os.kategorie === "ff" || od.kategorie === "ff") {
       return;
     }
@@ -220,13 +218,15 @@ export class DateRows extends Component {
     } catch (error) {
       console.log(error);
     }
+    console.log("hey");
     await this.getTasks();
+    console.log("hey");
   }
 
   async updateTask(obj, newInhalt) {
     try {
       const body = { newInhalt };
-      const response = await fetch(`http://localhost:5000/tasks/${obj["id"]}`, {
+      await fetch(`http://localhost:5000/tasks/${obj["id"]}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -236,6 +236,54 @@ export class DateRows extends Component {
     }
 
     await this.getTasks();
+  }
+
+  async getCatList() {
+    try {
+      const response = await fetch("http://localhost:5000/tasks/cats");
+      const jsonData = await response.json();
+      let liste = jsonData[0]["liste"];
+      return liste;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async deleteCat(cat) {
+    let liste = await this.getCatList();
+    liste = liste.split("/");
+    let temp = [];
+    for (var i = 0; i < liste.length; i++) {
+      if (liste[i] !== cat) {
+        temp.push(liste[i]);
+      }
+    }
+    try {
+      let newListe = temp.join("/");
+      const body = { newListe: newListe };
+      await fetch(`http://localhost:5000/tasks/cats/add`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async addCat(cat) {
+    try {
+      let liste = await this.getCatList();
+      let newListe = liste + "/" + cat;
+      const body = { newListe: newListe };
+      await fetch(`http://localhost:5000/tasks/cats/add`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async toogleDone(obj) {
@@ -258,6 +306,7 @@ export class DateRows extends Component {
   async deletekategorie(kategorie) {
     try {
       const body = { kategorie };
+      await this.deleteCat(kategorie);
       await fetch(`http://localhost:5000/all/tasks`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
@@ -275,7 +324,9 @@ export class DateRows extends Component {
   rightClick() {
     this.updateDateShift(1);
   }
-  updateDateShiftothers(val) {
+  async updateDateShiftothers(val) {
+    console.log(this.state.otherCats);
+    if (val === 1 && this.state.otherCats.length < 5) return;
     if (val === -1 && this.state.othersVerschiebung === 0) return;
     this.state.othersVerschiebung = this.state.othersVerschiebung + val;
     this.getOtherCats();
@@ -288,27 +339,13 @@ export class DateRows extends Component {
   }
 
   async addOtherCat(kategorie) {
-    const request = async () => {
-      try {
-        let inhalt = "";
-        let gmacht = false;
-        const body = { kategorie, inhalt, gmacht };
-        await fetch("http://localhost:5000/tasks", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        });
-      } catch (err) {
-        console.error(err.message);
-      }
-    };
-    await request();
+    await this.addCat(kategorie);
     await this.getOtherCats();
   }
 
   handleOnDragEnd(result) {
     if (!result.destination) return;
-    if (result.destination.droppableId == result.source.droppableId) {
+    if (result.destination.droppableId === result.source.droppableId) {
       this.reorderTasks(result);
     } else {
       this.changeCat(result);
@@ -317,25 +354,24 @@ export class DateRows extends Component {
 
   async handleOnDragEndOthers(result) {
     if (!result.destination) return;
-    console.log("salut");
-    if (result.destination.droppableId == result.source.droppableId) {
+    if (result.destination.droppableId === result.source.droppableId) {
       await this.reorderTasks(result);
     } else {
       await this.changeCat(result);
     }
-    console.log("bye");
     await this.getOtherCats();
   }
 
   render() {
     let temp = this.state.tasks;
     return (
-      <div className="main-task-container" style={{ padding: 0, margin: 0 }}>
-        <div className="date-row-main-div">
-          <div onClick={this.leftClick} className="arrow-icon-container">
-            <MdKeyboardArrowLeft className="arrow-icons" />
-          </div>
-          <DragDropContext onDragEnd={this.handleOnDragEnd}>
+      <DragDropContext onDragEnd={this.handleOnDragEnd}>
+        <div className="main-task-container" style={{ padding: 0, margin: 0 }}>
+          <div className="date-row-main-div">
+            <div onClick={this.leftClick} className="arrow-icon-container">
+              <MdKeyboardArrowLeft className="arrow-icons" />
+            </div>
+
             <div id="rows2" className="innerContainer">
               {this.state.dates.map((date) => (
                 <TaskClumnDays
@@ -358,28 +394,21 @@ export class DateRows extends Component {
                 />
               ))}
             </div>
-          </DragDropContext>
-          <div onClick={this.rightClick} className="arrow-icon-container">
-            <MdKeyboardArrowRight className="arrow-icons" />
+            <div onClick={this.rightClick} className="arrow-icon-container">
+              <MdKeyboardArrowRight className="arrow-icons" />
+            </div>
           </div>
-        </div>
 
-        <div
-          className="middel-task-toolbar"
-          style={{
-            padding: "10px",
-            backgroundColor: "#d3d3d4",
-          }}
-        >
-          <div className="toolbar-div">
-            <div>toolbar</div>
-            <AddCatModal
-              obj={{ id: 10, inhalt: "" }}
-              addCat={this.addOtherCat}
-            />
+          <div className="middel-task-toolbar">
+            <div className="toolbar-div">
+              <div>Toolbar</div>
+              <AddCatModal
+                obj={{ id: 10, inhalt: "" }}
+                addCat={this.addOtherCat}
+              />
+            </div>
           </div>
-        </div>
-        <div className="innerContainer" id="rows1">
+
           <div className="date-row-main-div">
             <div
               onClick={this.leftClickothers}
@@ -387,7 +416,7 @@ export class DateRows extends Component {
             >
               <MdKeyboardArrowLeft className="arrow-icons" />
             </div>
-            <DragDropContext onDragEnd={this.handleOnDragEndOthers}>
+            <div className="innerContainer" id="rows1">
               {this.state.otherCats.map((cat) => (
                 <TaskColumnOthers
                   key={cat}
@@ -401,7 +430,7 @@ export class DateRows extends Component {
                   object={temp[cat]}
                 />
               ))}
-            </DragDropContext>
+            </div>
             <div
               onClick={this.rightClickothers}
               className="arrow-icon-container"
@@ -410,7 +439,7 @@ export class DateRows extends Component {
             </div>
           </div>
         </div>
-      </div>
+      </DragDropContext>
     );
   }
 }

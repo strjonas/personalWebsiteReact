@@ -4,7 +4,7 @@ class TabNav extends React.Component {
   render() {
     return (
       <div style={{ width: "100%" }}>
-        <ul style={{ background: "red" }} className="nav nav-tabs TabNav">
+        <ul style={{ background: "#BF1209" }} className="nav nav-tabs TabNav">
           {this.props.tabs.map((tab) => {
             const active = tab === this.props.selected ? "acitve " : "";
 

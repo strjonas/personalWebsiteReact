@@ -1,7 +1,6 @@
 import React, { useState, Fragment } from "react";
 import { MdDelete } from "react-icons/md";
 import EditTodo from "./editTask";
-import { Draggable } from "react-beautiful-dnd";
 
 export default function TaskColumnRows({
   title,
@@ -36,7 +35,13 @@ export default function TaskColumnRows({
   if (updateTask === null) updateTask = undefined;
   if (objectRowCon === null) objectRowCon = undefined;
   if (!objectRowCon["gmacht"]) {
-    icon = <EditTodo obj={objectRowCon} updateTask={updateTask} />;
+    icon = (
+      <EditTodo
+        obj={objectRowCon}
+        updateTask={updateTask}
+        className="icon-Button"
+      />
+    );
     crossedOrNot = (
       <div onClick={donetoggle} className="divtextrow">
         {objectRows["inhalt"]}
@@ -54,12 +59,17 @@ export default function TaskColumnRows({
   objectRows["inhalt"] === ""
     ? (row = (
         <input
-          className="textInTaskRow"
+          className="textInTaskRow inputRow"
           style={{
             display: "inline-block",
-            border: "1px solid #ccc",
+            border: "1px solid #212222",
+            borderLeft: "none",
+            borderRight: "none",
+            borderTop: "none",
+            color: "#E8E6E3",
             borderRadius: "2px",
             boxSizing: "border-box",
+            backgroundColor: "#181A1B",
           }}
           type="text"
           value={val}

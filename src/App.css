@@ -6,9 +6,20 @@
   font-family: "Poppins", sans-serif;
 }
 
+html {
+  background-color: #181a1b;
+}
+
+#root {
+  color: #e8e6e3;
+  background-color: #181a1b;
+}
+
 .Task-Column {
-  border: 1px solid;
-  padding: 10px;
+  border-left: 1px solid;
+  border-right: 1px solid;
+  border-color: #212222;
+  padding: 5px;
   width: 340px;
 }
 .inprow {
@@ -26,6 +37,11 @@
 
 .icon-Button {
   margin: 5px;
+  cursor: auto;
+}
+.middel-task-toolbar {
+  padding: 10px;
+  background-color: #212222;
 }
 
 .arrow-icon-container {

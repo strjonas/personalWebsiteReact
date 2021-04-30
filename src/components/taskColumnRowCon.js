@@ -1,6 +1,6 @@
 import React from "react";
 import TaskColumnRows from "./taskColumnRows";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { Droppable, Draggable } from "react-beautiful-dnd";
 import { v4 as uuidv4 } from "uuid";
 
 export default function TaskColumnRowCon({
