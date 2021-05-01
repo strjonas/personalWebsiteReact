@@ -26,7 +26,7 @@ class App extends React.Component {
 
   async getBins() {
     try {
-      const response = await fetch("http://localhost:5000/bins");
+      const response = await fetch("http://192.168.178.41:5000/bins");
       const jsonData = await response.json();
       this.setState({ bins: jsonData });
     } catch (err) {
@@ -36,7 +36,7 @@ class App extends React.Component {
 
   async deleteReq(id) {
     try {
-      await fetch(`http://localhost:5000/bins/${id}`, {
+      await fetch(`http://192.168.178.41:5000/bins/${id}`, {
         method: "DELETE",
       });
     } catch (err) {
@@ -64,7 +64,7 @@ class App extends React.Component {
       try {
         let description = bin;
         const body = { description };
-        await fetch("http://localhost:5000/bins", {
+        await fetch("http://192.168.178.41:5000/bins", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),

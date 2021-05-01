@@ -37,9 +37,6 @@ html {
   height: 10px;
 }
 
-.footer-tasks {
-}
-
 .Task-Column {
   border-left: 1px solid;
   border-right: 1px solid;
@@ -193,9 +190,9 @@ html {
 }
 
 .arrow-icons {
-  height: 70px;
-  width: 30px;
-  margin: 3px;
+  height: 0px;
+  width: 0px;
+  margin: 0px;
 }
 
 .toolbar-div {
@@ -232,6 +229,11 @@ html {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
     display: grid;
+  }
+  .arrow-icons {
+    height: 70px;
+    width: 30px;
+    margin: 3px;
   }
 }
 @media screen and (min-width: 1400px) {

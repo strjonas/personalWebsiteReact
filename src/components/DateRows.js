@@ -4,6 +4,7 @@ import TaskColumnOthers from "./TaskClumnOthers";
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
 import AddCatModal from "./addCatModal";
 import { DragDropContext } from "react-beautiful-dnd";
+import { CSVLink } from "react-csv";
 
 export class DateRows extends Component {
   constructor(props) {
@@ -16,6 +17,7 @@ export class DateRows extends Component {
       datumVerschiebung: -1,
       othersVerschiebung: 0,
       CatList: [],
+      rawData: [{}],
     };
 
     this.setDates();
@@ -119,14 +121,21 @@ export class DateRows extends Component {
 
   async getTasks() {
     try {
-      const response = await fetch("http://localhost:5000/tasks");
+      const response = await fetch("http://192.168.178.41:5000/tasks");
       const jsonData = await response.json();
+      this.state.rawData = jsonData;
       if (jsonData !== undefined) {
         await this.sortTasks(jsonData);
       }
     } catch (err) {
       console.error(err.message);
     }
+  }
+
+  async returnTasks() {
+    const response = await fetch("http://192.168.178.41:5000/tasks");
+    const jsonData = await response.json();
+    return jsonData;
   }
 
   async addTask(obj, kategorie) {
@@ -149,7 +158,7 @@ export class DateRows extends Component {
       try {
         let inhalt = task;
         const body = { kategorie, inhalt, gmacht };
-        await fetch("http://localhost:5000/tasks", {
+        await fetch("http://192.168.178.41:5000/tasks", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
@@ -164,7 +173,7 @@ export class DateRows extends Component {
 
   async removeTask(id) {
     try {
-      await fetch(`http://localhost:5000/tasks/${id["id"]}`, {
+      await fetch(`http://192.168.178.41:5000/tasks/${id["id"]}`, {
         method: "DELETE",
       });
     } catch (err) {
@@ -183,7 +192,7 @@ export class DateRows extends Component {
     let id = result.draggableId;
     try {
       let body = { newkat: newkat, id: id };
-      await fetch(`http://localhost:5000/kategorie/tasks`, {
+      await fetch(`http://192.168.178.41:5000/kategorie/tasks`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -210,7 +219,7 @@ export class DateRows extends Component {
     }
     try {
       let body = { os: os, od: od };
-      await fetch(`http://localhost:5000/switch/tasks`, {
+      await fetch(`http://192.168.178.41:5000/switch/tasks`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -224,7 +233,7 @@ export class DateRows extends Component {
   async updateTask(obj, newInhalt) {
     try {
       const body = { newInhalt };
-      await fetch(`http://localhost:5000/tasks/${obj["id"]}`, {
+      await fetch(`http://192.168.178.41:5000/tasks/${obj["id"]}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -238,7 +247,7 @@ export class DateRows extends Component {
 
   async getCatList() {
     try {
-      const response = await fetch("http://localhost:5000/tasks/cats");
+      const response = await fetch("http://192.168.178.41:5000/tasks/cats");
       const jsonData = await response.json();
       let liste = jsonData[0]["liste"];
       return liste;
@@ -259,7 +268,7 @@ export class DateRows extends Component {
     try {
       let newListe = temp.join("/");
       const body = { newListe: newListe };
-      await fetch(`http://localhost:5000/tasks/cats/add`, {
+      await fetch(`http://192.168.178.41:5000/tasks/cats/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -274,7 +283,7 @@ export class DateRows extends Component {
       let liste = await this.getCatList();
       let newListe = liste + "/" + cat;
       const body = { newListe: newListe };
-      await fetch(`http://localhost:5000/tasks/cats/add`, {
+      await fetch(`http://192.168.178.41:5000/tasks/cats/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -290,7 +299,7 @@ export class DateRows extends Component {
     gmacht ? (param = "FALSE") : (param = "TRUE");
     const body = { param };
     try {
-      await fetch(`http://localhost:5000/tasks/state/${obj["id"]}`, {
+      await fetch(`http://192.168.178.41:5000/tasks/state/${obj["id"]}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -305,7 +314,7 @@ export class DateRows extends Component {
     try {
       const body = { kategorie };
       await this.deleteCat(kategorie);
-      await fetch(`http://localhost:5000/all/tasks`, {
+      await fetch(`http://192.168.178.41:5000/all/tasks`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -362,6 +371,22 @@ export class DateRows extends Component {
 
   render() {
     let temp = this.state.tasks;
+    const data = JSON.parse(JSON.stringify(this.state.rawData));
+    for (let i in data) {
+      data[i].gmacht ? (data[i].gmacht = "true") : (data[i].gmacht = "false");
+    }
+    const headers = [
+      { label: "ID", key: "id" },
+      { label: "Kategorie", key: "kategorie" },
+      { label: "Inhalt", key: "inhalt" },
+      { label: "Erledigt", key: "gmacht" },
+    ];
+    const csvReport = {
+      filename: "tasks.csv",
+      headers: headers,
+      data: data,
+    };
+    console.log(data);
     return (
       <div>
         <DragDropContext onDragEnd={this.handleOnDragEnd}>
@@ -403,7 +428,7 @@ export class DateRows extends Component {
 
             <div className="middel-task-toolbar">
               <div className="toolbar-div">
-                <div>Toolbar</div>
+                <CSVLink {...csvReport}> Export </CSVLink>
                 <AddCatModal
                   obj={{ id: 10, inhalt: "" }}
                   addCat={this.addOtherCat}

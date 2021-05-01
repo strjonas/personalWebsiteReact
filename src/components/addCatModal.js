@@ -15,7 +15,7 @@ const AddCatModal = ({ obj, addCat }) => {
         style={{
           color: "red",
           width: "50px",
-          height: "20px",
+          height: "30px",
         }}
         type="button"
         data-toggle="modal"
