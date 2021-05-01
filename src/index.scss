@@ -68,6 +68,12 @@ html {
   background-color: $bg-co;
 }
 
+.pastebin-textfield {
+  overflow: hidden;
+  overflow-x: scroll;
+  white-space: nowrap;
+}
+
 .TabNav {
   display: flex;
   flex-direction: row;

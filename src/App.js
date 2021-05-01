@@ -6,6 +6,7 @@ import Tab from "./components/tab";
 import NoteHandler from "./noteHandler";
 import Pastebins from "./components/Pastebins";
 import TasksHandler from "./components/TasksHandler";
+import DateRows from "./components/DateRows";
 
 class App extends React.Component {
   constructor(props) {
@@ -90,10 +91,11 @@ class App extends React.Component {
     this.setState({ selected: tab });
   };
   render() {
+    //return <DateRows />;
     return (
       <div className="App mt-4">
         <TabNav
-          tabs={["Pastebin", "Notes", "Bookmarks", "Tasks", "Photo Pastebin"]}
+          tabs={["Pastebin", "Bookmarks", "Tasks", "Photo"]}
           selected={this.state.selected}
           setSelected={this.setSelected}
         >
@@ -125,17 +127,11 @@ class App extends React.Component {
             </div>
           </Tab>
 
-          <Tab isSelected={this.state.selected === "Notes"}>
-            <NoteHandler />
-          </Tab>
-
           <Tab isSelected={this.state.selected === "Bookmarks"}>Bookmarks</Tab>
           <Tab isSelected={this.state.selected === "Tasks"}>
             <TasksHandler />
           </Tab>
-          <Tab isSelected={this.state.selected === "Photo Pastebin"}>
-            Photo Pastebin
-          </Tab>
+          <Tab isSelected={this.state.selected === "Photo"}>Photo</Tab>
         </TabNav>
       </div>
     );

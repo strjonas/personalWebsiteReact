@@ -9,7 +9,7 @@ const Note = ({ note, deleteNote }) => {
   return (
     <div className="container ">
       <div className="row con">
-        <p>{note.description}</p>
+        <p className="pastebin-textfield">{note.description}</p>
         <div>
           <MdContentCopy className="icon-Button" onClick={() => copyf()} />
           <MdDelete

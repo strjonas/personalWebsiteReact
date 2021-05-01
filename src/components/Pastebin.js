@@ -9,7 +9,7 @@ const Pastebin = ({ bin, deleteBin }) => {
   return (
     <div className="container ">
       <div className="row con">
-        <p>{bin.description}</p>
+        <p className="pastebin-textfield">{bin.description}</p>
         <div>
           <MdContentCopy className="icon-Button" onClick={() => copyf()} />
           <MdDelete className="icon-Button" onClick={() => deleteBin(bin.id)} />

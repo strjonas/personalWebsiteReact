@@ -218,9 +218,7 @@ export class DateRows extends Component {
     } catch (error) {
       console.log(error);
     }
-    console.log("hey");
     await this.getTasks();
-    console.log("hey");
   }
 
   async updateTask(obj, newInhalt) {
