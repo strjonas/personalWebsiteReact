@@ -139,6 +139,27 @@ html {
   --darkreader-inline-bgcolor: #0a1f36;
 }
 
+.d-tree-container {
+  list-style: none;
+  padding: 0;
+}
+
+.d-tree-node {
+  padding: 0.75rem 1.25rem;
+}
+
+.d-tree-toggler.active {
+  transform: rotate(90deg);
+}
+
+.d-tree-head {
+  color: $fg-co;
+}
+
+.mr-1 {
+  color: $fg-co;
+}
+
 .icon-Button {
   margin: 5px;
   cursor: auto;

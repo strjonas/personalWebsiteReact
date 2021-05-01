@@ -3,13 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/plugin-syntax-jsx": "^7.12.13",
+    "@babel/plugin-transform-react-jsx": "^7.13.12",
+    "@babel/preset-env": "^7.14.0",
+    "@fortawesome/react-fontawesome": "^0.1.14",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "bootstrap": "^4.6.0",
+    "copy-to-clipboard": "^3.3.1",
     "node-cron": "^3.0.0",
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",
+    "react-csv": "^2.0.3",
     "react-dom": "^17.0.2",
+    "react-fontawesome": "^1.7.1",
     "react-icons": "^4.2.0",
     "react-scripts": "^4.0.3",
     "serve": "^11.3.2",
@@ -43,6 +51,16 @@
     ]
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.13.13",
     "node-sass": "^5.0.0"
-  }
+  },
+  "mutator": {
+    "plugins": [
+      "@babel/plugin-syntax-jsx"
+    ]
+  },
+  "main": "index.js",
+  "repository": "https://github.com/strjonas/personalWebsiteReact.git",
+  "author": "strjonas <jonas.strabel@gmail.com>",
+  "license": "MIT"
 }
