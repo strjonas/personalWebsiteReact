@@ -6,62 +6,62 @@ export default function BookmarkHandler() {
     {
       key: "0",
       label: "Documents",
-      icon: "fa fa-folder",
-      title: "Documents Folder",
+      folder: "main",
+      isfolder: "true",
       children: [
         {
           key: "0-0",
-          label: "Document 1-1",
-          icon: "fa fa-folder",
-          title: "Documents Folder",
+          label: "Private Documents",
+          folder: "Documents",
+          isfolder: "true",
           children: [
             {
               key: "0-1-1",
               label: "Document-0-1.doc",
-              icon: "fa fa-file",
-              title: "Documents Folder",
+              folder: "Private Documents",
+              isfolder: "false",
             },
             {
               key: "0-1-2",
               label: "Document-0-2.doc",
-              icon: "fa fa-file",
-              title: "Documents Folder",
+              folder: "Private Documents",
+              isfolder: "false",
             },
             {
               key: "0-1-3",
               label: "Document-0-3.doc",
-              icon: "fa fa-file",
-              title: "Documents Folder",
+              folder: "Private Documents",
+              isfolder: "false",
             },
             {
               key: "0-1-4",
               label: "Document-0-4.doc",
-              icon: "fa fa-file",
-              title: "Documents Folder",
+              folder: "Private Documents",
+              isfolder: "true",
               children: [
                 {
                   key: "0-1-1-1",
                   label: "Document-0-1.doc",
-                  icon: "fa fa-file",
-                  title: "Documents Folder",
+                  folder: "Very Private Documents",
+                  isfolder: "false",
                 },
                 {
                   key: "0-1-2-1",
                   label: "Document-0-2.doc",
-                  icon: "fa fa-file",
-                  title: "Documents Folder",
+                  folder: "Very Private Documents",
+                  isfolder: "false",
                 },
                 {
                   key: "0-1-3-1",
                   label: "Document-0-3.doc",
-                  icon: "fa fa-file",
-                  title: "Documents Folder",
+                  folder: "Very Private Documents",
+                  isfolder: "false",
                 },
                 {
                   key: "0-1-4-1",
                   label: "Document-0-4.doc",
-                  icon: "fa fa-file",
-                  title: "Documents Folder",
+                  folder: "Very Private Documents",
+                  isfolder: "false",
                 },
               ],
             },
@@ -70,33 +70,60 @@ export default function BookmarkHandler() {
       ],
     },
     {
-      key: "1",
+      key: "0d",
       label: "Desktop",
-      icon: "fa fa-desktop",
-      title: "Desktop Folder",
+      folder: "main",
+      isfolder: "true",
       children: [
         {
-          key: "1-0",
-          label: "document1.doc",
-          icon: "fa fa-file",
-          title: "Documents Folder",
-        },
-        {
-          key: "0-0",
-          label: "documennt-2.doc",
-          icon: "fa fa-file",
-          title: "Documents Folder",
+          key: "0-1-4dd-1",
+          label: "Document-0-4.doc",
+          folder: "Very Private Documents",
+          isfolder: "false",
         },
       ],
     },
-    {
-      key: "2",
-      label: "Downloads",
-      icon: "fa fa-download",
-      title: "Downloads Folder",
-      children: [],
-    },
   ];
+
+  async function fetchBookmarks() {}
+
+  async function editBookmark(obj, name) {
+    console.log(`changing bookmark to ${name}`);
+  }
+
+  async function addBookmark(obj, name) {
+    console.log("adding bookmark", name);
+  }
+  async function deleteBookmark(obj) {
+    console.log("deleteing bookmark", obj);
+  }
+  async function addFolder(obj, name) {
+    console.log(`adding folder with name ${name}`);
+  }
+  async function deleteFolder(obj) {
+    console.log("deleting folder", obj);
+  }
+
+  function treeEventHandler(event, eventType, name) {
+    switch (eventType) {
+      case "newFolder":
+        addFolder(event, name);
+        break;
+      case "deleteFolder":
+        deleteFolder(event);
+        break;
+      case "newLink":
+        addBookmark(event, name);
+        break;
+      case "deleteLink":
+        deleteBookmark(event);
+        break;
+      case "editLink":
+        editBookmark(event, name);
+        break;
+    }
+  }
+
   return (
     <>
       <div className="row">
@@ -104,7 +131,10 @@ export default function BookmarkHandler() {
           <div className="mt-3">
             <div className="row mt-3 -d-flex justify-content-center">
               <div className="col-lg-8 text-left text-dark">
-                <BookmarkTree data={treeData} />
+                <BookmarkTree
+                  data={treeData}
+                  treeEventHandler={treeEventHandler}
+                />
               </div>
             </div>
           </div>
