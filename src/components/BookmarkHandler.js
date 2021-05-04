@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import BookmarkTree from "./BookmarkTree";
+import NewFolder from "./newFolderPopup";
+import NewLink from "./newLink";
 
 export default function BookmarkHandler() {
   const treeData = [
@@ -85,20 +87,67 @@ export default function BookmarkHandler() {
     },
   ];
 
-  async function fetchBookmarks() {}
+  const [data, setData] = useState(treeData);
+  const [bookmarks, setBookmarks] = useState();
+
+  function getChildren(name) {
+    let children = [];
+    let array = [];
+    for (let element in bookmarks) {
+      if (bookmarks[element].folder !== name) return;
+      if (bookmarks[element].isfolder === "true")
+        children.push(bookmarks[element]);
+      array.push(bookmarks[element]);
+    }
+    return [array, children];
+  }
+
+  function sortMain(name) {
+    let obj = getChildren(name);
+    let children = obj[1];
+    let array = obj[0];
+    console.log(children, array);
+  }
+
+  async function fetchBookmarks() {
+    const response = await fetch("http://192.168.178.41:5000/bookmarks");
+    const jsonData = await response.json();
+    setBookmarks(jsonData);
+    //sortData();
+    console.log(jsonData);
+  }
 
   async function editBookmark(obj, name) {
     console.log(`changing bookmark to ${name}`);
   }
 
   async function addBookmark(obj, name) {
-    console.log("adding bookmark", name);
+    let folder = obj.label;
+    let link = name;
+    let isfolder = "false";
+    const body = { link, folder, isfolder };
+    await fetch("http://192.168.178.41:5000/bookmarks/add", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    console.log(obj, name);
   }
   async function deleteBookmark(obj) {
     console.log("deleteing bookmark", obj);
   }
   async function addFolder(obj, name) {
-    console.log(`adding folder with name ${name}`);
+    let folder = obj.label;
+    let link = name;
+    let isfolder = "true";
+    const body = { link, folder, isfolder };
+    await fetch("http://192.168.178.41:5000/bookmarks/add", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    console.log(obj, name);
   }
   async function deleteFolder(obj) {
     console.log("deleting folder", obj);
@@ -123,6 +172,13 @@ export default function BookmarkHandler() {
         break;
     }
   }
+  function newFolder(obj, name) {
+    addFolder({ label: "main" }, name);
+  }
+  function newLink(obj, name) {
+    addBookmark({ label: "main" }, name);
+  }
+  fetchBookmarks();
 
   return (
     <>
@@ -131,10 +187,20 @@ export default function BookmarkHandler() {
           <div className="mt-3">
             <div className="row mt-3 -d-flex justify-content-center">
               <div className="col-lg-8 text-left text-dark">
-                <BookmarkTree
-                  data={treeData}
-                  treeEventHandler={treeEventHandler}
-                />
+                <div
+                  className="row"
+                  style={{ color: "white", paddingLeft: "30px" }}
+                >
+                  <NewFolder
+                    obj={{ id: "newFolderMain", inhalt: "" }}
+                    newFolder={newFolder}
+                  />
+                  <NewLink
+                    obj={{ id: "newLinkMain", inhalt: "" }}
+                    editLink={newLink}
+                  />
+                </div>
+                <BookmarkTree data={data} treeEventHandler={treeEventHandler} />
               </div>
             </div>
           </div>
