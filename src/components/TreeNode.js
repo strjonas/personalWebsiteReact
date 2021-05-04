@@ -5,7 +5,7 @@ import EditLink from "./editLink";
 import NewFolder from "./newFolderPopup";
 import NewLink from "./newLink";
 
-export default function TreeNode({ node, treeEventHandler }) {
+export default function TreeNode({ node, treeEventHandler, data }) {
   const [childVisible, setChildVisibility] = useState(false);
   const hasChild = node.isfolder !== "false" ? true : false;
   let isfol;
@@ -23,7 +23,9 @@ export default function TreeNode({ node, treeEventHandler }) {
     treeEventHandler(node, "deleteFolder");
   }
 
-  function newLink(e, name) {
+  function newLinkH(e, name) {
+    console.log("heeee");
+    return;
     treeEventHandler(node, "newLink", name);
   }
 
@@ -34,6 +36,8 @@ export default function TreeNode({ node, treeEventHandler }) {
   function editLink(e, inhalt) {
     treeEventHandler(node, "editLink", inhalt);
   }
+
+  console.log(node);
 
   return (
     <li>
@@ -59,7 +63,7 @@ export default function TreeNode({ node, treeEventHandler }) {
               <MdFolder onClick={(e) => setChildVisibility((v) => !v)} />
             </i>
           )}
-          <div style={{ marginLeft: "50px" }}>{node.label}</div>
+          <div>{node.link}</div>
           <div>
             {hasChild && (
               <div className="row">
@@ -69,7 +73,7 @@ export default function TreeNode({ node, treeEventHandler }) {
                 />
                 <NewLink
                   obj={{ id: [node.key, "randomShit"], inhalt: "" }}
-                  editLink={newLink}
+                  editLink={newLinkH}
                 />
 
                 <div style={{ width: "30px" }}></div>
@@ -96,7 +100,8 @@ export default function TreeNode({ node, treeEventHandler }) {
           <ul className="d-flex d-tree-container flex-column">
             <BookmarkTree
               treeEventHandler={treeEventHandler}
-              data={node.children}
+              data={data}
+              nextOne={node.link}
             />
           </ul>
         </div>

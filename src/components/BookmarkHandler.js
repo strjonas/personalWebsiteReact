@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BookmarkTree from "./BookmarkTree";
 import NewFolder from "./newFolderPopup";
 import NewLink from "./newLink";
@@ -86,35 +86,35 @@ export default function BookmarkHandler() {
       ],
     },
   ];
+  const [data, setData] = useState();
 
-  const [data, setData] = useState(treeData);
-  const [bookmarks, setBookmarks] = useState();
-
-  function getChildren(name) {
-    let children = [];
-    let array = [];
-    for (let element in bookmarks) {
-      if (bookmarks[element].folder !== name) return;
-      if (bookmarks[element].isfolder === "true")
-        children.push(bookmarks[element]);
-      array.push(bookmarks[element]);
-    }
-    return [array, children];
-  }
-
-  function sortMain(name) {
-    let obj = getChildren(name);
-    let children = obj[1];
-    let array = obj[0];
-    console.log(children, array);
-  }
+  useEffect(() => {
+    fetchBookmarks();
+  }, []);
 
   async function fetchBookmarks() {
     const response = await fetch("http://192.168.178.41:5000/bookmarks");
     const jsonData = await response.json();
-    setBookmarks(jsonData);
-    //sortData();
-    console.log(jsonData);
+    let oTasks = {};
+    try {
+      jsonData.forEach((task) => {
+        let temp = task.folder;
+        if (!oTasks[temp]) {
+          oTasks[temp] = [task];
+        } else {
+          let name = task.folder;
+          let temp = oTasks[name];
+          if (task.inhalt !== "") {
+            temp.push(task);
+          }
+
+          oTasks[name] = temp;
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    setData(oTasks);
   }
 
   async function editBookmark(obj, name) {
@@ -131,8 +131,6 @@ export default function BookmarkHandler() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
-
-    console.log(obj, name);
   }
   async function deleteBookmark(obj) {
     console.log("deleteing bookmark", obj);
@@ -162,6 +160,7 @@ export default function BookmarkHandler() {
         deleteFolder(event);
         break;
       case "newLink":
+        console.log("heyy");
         addBookmark(event, name);
         break;
       case "deleteLink":
@@ -176,9 +175,9 @@ export default function BookmarkHandler() {
     addFolder({ label: "main" }, name);
   }
   function newLink(obj, name) {
+    console.log("HIiI");
     addBookmark({ label: "main" }, name);
   }
-  fetchBookmarks();
 
   return (
     <>
@@ -200,7 +199,11 @@ export default function BookmarkHandler() {
                     editLink={newLink}
                   />
                 </div>
-                <BookmarkTree data={data} treeEventHandler={treeEventHandler} />
+                <BookmarkTree
+                  nextOne="main"
+                  data={data}
+                  treeEventHandler={treeEventHandler}
+                />
               </div>
             </div>
           </div>
