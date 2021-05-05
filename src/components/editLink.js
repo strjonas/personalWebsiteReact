@@ -2,7 +2,7 @@ import React, { Fragment, useState } from "react";
 import { MdModeEdit } from "react-icons/md";
 
 const EditLink = ({ obj, editLink }) => {
-  const [inhalt, setinhalt] = useState(obj.inhalt);
+  const [inhalt, setinhalt] = useState(obj.link);
   if (inhalt === null) setinhalt("");
   const updateinhalt = async (e) => {
     e.preventDefault();
@@ -14,13 +14,13 @@ const EditLink = ({ obj, editLink }) => {
       <MdModeEdit
         type="button"
         data-toggle="modal"
-        data-target={`#id${obj["id"]}`}
+        data-target={`#id${obj.id}`}
       ></MdModeEdit>
 
       <div
         className="modal"
-        id={`id${obj["id"]}`}
-        onClick={() => setinhalt(obj.inhalt)}
+        id={`id${obj.id}`}
+        onClick={() => setinhalt(obj.link)}
       >
         <div className="modal-dialog">
           <div className="modal-content">
@@ -30,7 +30,7 @@ const EditLink = ({ obj, editLink }) => {
                 type="button"
                 className="close"
                 data-dismiss="modal"
-                onClick={() => setinhalt(obj.inhalt)}
+                onClick={() => setinhalt(obj.link)}
               >
                 &times;
               </button>
@@ -58,7 +58,7 @@ const EditLink = ({ obj, editLink }) => {
                 type="button"
                 className="btn btn-danger"
                 data-dismiss="modal"
-                onClick={() => setinhalt(obj.inhalt)}
+                onClick={() => setinhalt(obj.link)}
               >
                 Close
               </button>

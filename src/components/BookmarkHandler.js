@@ -119,36 +119,65 @@ export default function BookmarkHandler() {
 
   async function editBookmark(obj, name) {
     console.log(`changing bookmark to ${name}`);
+    await fetchBookmarks();
   }
 
   async function addBookmark(obj, name) {
-    let folder = obj.label;
+    let folder = obj.link;
     let link = name;
     let isfolder = "false";
     const body = { link, folder, isfolder };
+    console.log(body);
     await fetch("http://192.168.178.41:5000/bookmarks/add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
+    await fetchBookmarks();
   }
   async function deleteBookmark(obj) {
-    console.log("deleteing bookmark", obj);
+    try {
+      await fetch(`http://192.168.178.41:5000/bookmarks/${obj["id"]}`, {
+        method: "DELETE",
+      });
+    } catch (err) {
+      console.error(err);
+    }
+    await fetchBookmarks();
   }
+
   async function addFolder(obj, name) {
-    let folder = obj.label;
+    let folder = obj.link;
     let link = name;
     let isfolder = "true";
     const body = { link, folder, isfolder };
+    console.log(body);
     await fetch("http://192.168.178.41:5000/bookmarks/add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
-    console.log(obj, name);
+    await fetchBookmarks();
   }
   async function deleteFolder(obj) {
-    console.log("deleting folder", obj);
+    const id = obj.id;
+    const name = obj.link;
+    const body = { id, name };
+    try {
+      const response = await fetch(
+        "http://192.168.178.41:5000/delete/bookmarks",
+        {
+          method: "delete",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      );
+      await fetchBookmarks();
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+    await fetchBookmarks();
   }
 
   function treeEventHandler(event, eventType, name) {
@@ -160,7 +189,6 @@ export default function BookmarkHandler() {
         deleteFolder(event);
         break;
       case "newLink":
-        console.log("heyy");
         addBookmark(event, name);
         break;
       case "deleteLink":
@@ -175,7 +203,6 @@ export default function BookmarkHandler() {
     addFolder({ label: "main" }, name);
   }
   function newLink(obj, name) {
-    console.log("HIiI");
     addBookmark({ label: "main" }, name);
   }
 

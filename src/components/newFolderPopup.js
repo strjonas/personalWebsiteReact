@@ -2,8 +2,8 @@ import React, { Fragment, useState } from "react";
 import { MdCreateNewFolder } from "react-icons/md";
 
 const NewFolder = ({ obj, newFolder }) => {
-  const [inhalt, setinhalt] = useState(obj.inhalt);
-  if (inhalt === null) setinhalt("");
+  const [inhalt, setinhalt] = useState(obj.link);
+  if (inhalt === null || inhalt === undefined) setinhalt("");
   const updateinhalt = async (e) => {
     e.preventDefault();
     newFolder(obj, inhalt);
@@ -20,7 +20,7 @@ const NewFolder = ({ obj, newFolder }) => {
       <div
         className="modal"
         id={`id${obj["id"]}`}
-        onClick={() => setinhalt(obj.inhalt)}
+        onClick={() => setinhalt(obj.link)}
       >
         <div className="modal-dialog">
           <div className="modal-content">
@@ -30,7 +30,7 @@ const NewFolder = ({ obj, newFolder }) => {
                 type="button"
                 className="close"
                 data-dismiss="modal"
-                onClick={() => setinhalt(obj.inhalt)}
+                onClick={() => setinhalt(obj.link)}
               >
                 &times;
               </button>
@@ -58,7 +58,7 @@ const NewFolder = ({ obj, newFolder }) => {
                 type="button"
                 className="btn btn-danger"
                 data-dismiss="modal"
-                onClick={() => setinhalt(obj.inhalt)}
+                onClick={() => setinhalt(obj.link)}
               >
                 Close
               </button>

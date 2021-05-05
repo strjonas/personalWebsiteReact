@@ -24,8 +24,6 @@ export default function TreeNode({ node, treeEventHandler, data }) {
   }
 
   function newLinkH(e, name) {
-    console.log("heeee");
-    return;
     treeEventHandler(node, "newLink", name);
   }
 
@@ -36,8 +34,6 @@ export default function TreeNode({ node, treeEventHandler, data }) {
   function editLink(e, inhalt) {
     treeEventHandler(node, "editLink", inhalt);
   }
-
-  console.log(node);
 
   return (
     <li>
@@ -68,11 +64,11 @@ export default function TreeNode({ node, treeEventHandler, data }) {
             {hasChild && (
               <div className="row">
                 <NewFolder
-                  obj={{ id: node.key, inhalt: "" }}
+                  obj={{ id: `${node.id}newfolder`, inhalt: "" }}
                   newFolder={newFolder}
                 />
                 <NewLink
-                  obj={{ id: [node.key, "randomShit"], inhalt: "" }}
+                  obj={{ id: `${node.id}newlink`, inhalt: "" }}
                   editLink={newLinkH}
                 />
 
@@ -84,7 +80,7 @@ export default function TreeNode({ node, treeEventHandler, data }) {
             {!hasChild && (
               <div className="row">
                 <EditLink
-                  obj={{ id: node.key, inhalt: node.label }}
+                  obj={{ id: `${node.id}editlink`, link: node.link }}
                   editLink={editLink}
                 />
                 <div style={{ width: "30px" }}></div>

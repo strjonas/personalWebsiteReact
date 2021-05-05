@@ -2,11 +2,11 @@ import React, { Fragment, useState } from "react";
 import { MdNoteAdd } from "react-icons/md";
 
 const NewLink = ({ obj, editLink }) => {
-  const [inhalt2, setinhalt2] = useState(obj.inhalt);
-  if (inhalt2 === null) setinhalt2("");
+  const [inhalt2, setinhalt2] = useState(obj.link);
+  if (inhalt2 === null || inhalt2 === undefined) setinhalt2("");
   const updateinhalt = async (e) => {
     e.preventDefault();
-    editLink(obj[0], inhalt2);
+    editLink(obj, inhalt2);
   };
 
   return (
@@ -14,10 +14,14 @@ const NewLink = ({ obj, editLink }) => {
       <MdNoteAdd
         type="button"
         data-toggle="modal"
-        data-target={`#idsf`}
+        data-target={`#id${obj.id}`}
       ></MdNoteAdd>
 
-      <div className="modal" id={`idsf`} onClick={() => setinhalt2(obj.inhalt)}>
+      <div
+        className="modal"
+        id={`id${obj.id}`}
+        onClick={() => setinhalt2(obj.link)}
+      >
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
@@ -26,7 +30,7 @@ const NewLink = ({ obj, editLink }) => {
                 type="button"
                 className="close"
                 data-dismiss="modal"
-                onClick={() => setinhalt2(obj.inhalt)}
+                onClick={() => setinhalt2(obj.link)}
               >
                 &times;
               </button>
@@ -54,7 +58,7 @@ const NewLink = ({ obj, editLink }) => {
                 type="button"
                 className="btn btn-danger"
                 data-dismiss="modal"
-                onClick={() => setinhalt2(obj.inhalt)}
+                onClick={() => setinhalt2(obj.link)}
               >
                 Close
               </button>
