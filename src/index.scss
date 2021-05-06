@@ -139,6 +139,25 @@ html {
   --darkreader-inline-bgcolor: #0a1f36;
 }
 
+.pastebin-input-field {
+  color: $fg-co;
+}
+
+.Bookmark-container {
+  padding: 10px;
+  height: 80vh;
+  overflow: scroll;
+  padding-top: 20px;
+  border: 1px solid;
+  border-color: $sep-co;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.Tree-node {
+  padding: 5px;
+}
+
 .d-tree-container {
   list-style: none;
   padding: 0;
@@ -149,7 +168,6 @@ html {
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid;
-  border-top: 1px solid;
   border-color: $sep-co;
 }
 

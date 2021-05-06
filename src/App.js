@@ -111,7 +111,7 @@ class App extends React.Component {
                         id="pastebin-input"
                         type="text"
                         onChange={this.handleInput}
-                        className="form-control"
+                        className="form-control pastebin-input-field"
                         value={this.state.inpval}
                         style={{ width: "auto" }}
                       ></input>
@@ -202,7 +202,12 @@ class App extends React.Component {
                 </svg>
               </a>
             </div>
-            <div style={{ paddingLeft: "85%", fontSize: "10px" }}>
+            <div style={{ width: window.innerWidth - 200 }}></div>
+            <div
+              style={{
+                fontSize: "10px",
+              }}
+            >
               jonix development LLC
             </div>
           </div>

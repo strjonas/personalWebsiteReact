@@ -9,7 +9,6 @@ export default function BookmarkHandler() {
   useEffect(() => {
     fetchBookmarks();
   }, []);
-
   async function fetchBookmarks() {
     const response = await fetch("http://192.168.178.41:5000/bookmarks");
     const jsonData = await response.json();
@@ -25,8 +24,19 @@ export default function BookmarkHandler() {
           if (task.inhalt !== "") {
             temp.push(task);
           }
+          let sortedTemp = [];
+          for (let key in temp) {
+            if (temp[key].isfolder === "true") {
+              sortedTemp.push(temp[key]);
+            }
+          }
+          for (let key in temp) {
+            if (temp[key].isfolder === "false") {
+              sortedTemp.push(temp[key]);
+            }
+          }
 
-          oTasks[name] = temp;
+          oTasks[name] = sortedTemp;
         }
       });
     } catch (e) {
@@ -128,16 +138,16 @@ export default function BookmarkHandler() {
 
   return (
     <>
-      <div className="row">
+      <div className="row Bookmark-main">
         <div className="col text-center">
           <div className="mt-3">
             <div className="row mt-3 -d-flex justify-content-center">
-              <div className="col-lg-8 text-left text-dark">
+              <div className="col-lg-8 text-left text-dark Bookmark-container">
                 <div
                   className="row"
                   style={{
                     color: "white",
-                    paddingLeft: "30px",
+                    paddingLeft: "40px",
                     paddingBottom: "20px",
                   }}
                 >
@@ -149,6 +159,8 @@ export default function BookmarkHandler() {
                     obj={{ id: "newLinkMain", inhalt: "" }}
                     editLink={newLink}
                   />
+                  <div style={{ width: "45%" }}></div>
+                  <p> Bookmarks </p>
                 </div>
                 <BookmarkTree
                   nextOne="main"

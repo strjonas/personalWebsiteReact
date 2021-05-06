@@ -26,6 +26,7 @@ export default function TreeNode({ node, treeEventHandler, data, counter }) {
 
   const [open, SetOpen] = useState(false);
   const [message, SetMessage] = useState("");
+  const [isHovered, setHover] = useState(false);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -60,10 +61,14 @@ export default function TreeNode({ node, treeEventHandler, data, counter }) {
   function editLink(e, inhalt) {
     treeEventHandler(node, "editLink", inhalt);
   }
-
   return (
-    <li>
-      <div className={`d-flex `} style={{ paddingLeft: `${counter * 20}px` }}>
+    <li className="Tree-node">
+      <div
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={(e) => setHover(false)}
+        className={`d-flex `}
+        style={{ paddingLeft: `${counter * 20}px` }}
+      >
         {hasChild && (
           <div
             className={`d-inline d-tree-toggler ${
@@ -88,7 +93,7 @@ export default function TreeNode({ node, treeEventHandler, data, counter }) {
           {hasChild && <div>{node.link}</div>}
           {!hasChild && <a href={node.link}>{node.link}</a>}
           <div>
-            {hasChild && (
+            {hasChild && isHovered && (
               <div className="row">
                 <NewFolder
                   obj={{ id: `${node.id}newfolder`, inhalt: "" }}
@@ -104,7 +109,7 @@ export default function TreeNode({ node, treeEventHandler, data, counter }) {
                 <div style={{ width: "16px" }}></div>
               </div>
             )}
-            {!hasChild && (
+            {!hasChild && isHovered && (
               <div className="row">
                 <MdContentCopy onClick={() => copyf()} />
                 <EditLink
