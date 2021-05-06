@@ -140,28 +140,31 @@ export default function BookmarkHandler() {
     <>
       <div className="row Bookmark-main">
         <div className="col text-center">
+          <div
+            className="row"
+            style={{
+              color: "white",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <div>
+              <NewFolder
+                obj={{ id: "newFolderMain", inhalt: "" }}
+                newFolder={newFolder}
+              />
+
+              <NewLink
+                obj={{ id: "newLinkMain", inhalt: "" }}
+                editLink={newLink}
+              />
+            </div>
+            <div style={{ width: "40px" }}></div>
+            <p> Bookmarks </p>
+          </div>
           <div className="mt-3">
             <div className="row mt-3 -d-flex justify-content-center">
               <div className="col-lg-8 text-left text-dark Bookmark-container">
-                <div
-                  className="row"
-                  style={{
-                    color: "white",
-                    paddingLeft: "40px",
-                    paddingBottom: "20px",
-                  }}
-                >
-                  <NewFolder
-                    obj={{ id: "newFolderMain", inhalt: "" }}
-                    newFolder={newFolder}
-                  />
-                  <NewLink
-                    obj={{ id: "newLinkMain", inhalt: "" }}
-                    editLink={newLink}
-                  />
-                  <div style={{ width: "45%" }}></div>
-                  <p> Bookmarks </p>
-                </div>
                 <BookmarkTree
                   nextOne="main"
                   counter={1}

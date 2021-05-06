@@ -61,11 +61,23 @@ export default function TreeNode({ node, treeEventHandler, data, counter }) {
   function editLink(e, inhalt) {
     treeEventHandler(node, "editLink", inhalt);
   }
+
+  function onMouseEnter(e) {
+    setHover(true);
+    if (node.isfolder === "true") return;
+    document.getElementById(`${node.id}`).style.backgroundColor = "red";
+  }
+  function onMouseLeave(e) {
+    //#212222;
+    setHover(false);
+    if (node.isfolder === "true") return;
+    document.getElementById(`${node.id}`).style.background = "#181a1b";
+  }
   return (
-    <li className="Tree-node">
+    <li className={`Tree-node `}>
       <div
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={(e) => setHover(false)}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
         className={`d-flex `}
         style={{ paddingLeft: `${counter * 20}px` }}
       >
@@ -83,18 +95,25 @@ export default function TreeNode({ node, treeEventHandler, data, counter }) {
           </div>
         )}
 
-        <div className={`col row d-tree-head ${isfol} ${islink}`}>
+        <div
+          onClick={(e) => setChildVisibility((v) => !v)}
+          className={`col row d-tree-head ${isfol} ${islink}`}
+          id={`${node.id}`}
+        >
+          {hasChild && <i className={`mr-1`}> </i>}
           {hasChild && (
-            <i className={`mr-1`}>
-              {" "}
-              <MdFolder onClick={(e) => setChildVisibility((v) => !v)} />
-            </i>
+            <div onClick={(e) => setChildVisibility((v) => !v)}>
+              {node.link}
+            </div>
           )}
-          {hasChild && <div>{node.link}</div>}
-          {!hasChild && <a href={node.link}>{node.link}</a>}
-          <div>
+          {!hasChild && (
+            <a style={{ color: "white" }} href={node.link}>
+              {node.link}
+            </a>
+          )}
+          <div className="icon-container-bookmarklinks">
             {hasChild && isHovered && (
-              <div className="row">
+              <div className="row ">
                 <NewFolder
                   obj={{ id: `${node.id}newfolder`, inhalt: "" }}
                   newFolder={newFolder}
@@ -106,7 +125,7 @@ export default function TreeNode({ node, treeEventHandler, data, counter }) {
 
                 <div style={{ width: "30px" }}></div>
                 <MdDelete onClick={deleteFolder} />
-                <div style={{ width: "16px" }}></div>
+                <div style={{ width: "20px" }}></div>
               </div>
             )}
             {!hasChild && isHovered && (

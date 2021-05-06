@@ -6,6 +6,7 @@ import Tab from "./components/tab";
 import Pastebins from "./components/Pastebins";
 import TasksHandler from "./components/TasksHandler";
 import BookmarkHandler from "./components/BookmarkHandler";
+import PhotoHandler from "./components/PhotoHandler";
 
 class App extends React.Component {
   constructor(props) {
@@ -141,9 +142,7 @@ class App extends React.Component {
               <TasksHandler />
             </Tab>
             <Tab isSelected={this.state.selected === "Photo"}>
-              <div style={{ height: "80vh" }}>
-                https://mlaursen.github.io/react-md-v1-docs/#/components/file-inputs
-              </div>
+              <PhotoHandler />
             </Tab>
           </TabNav>
         </div>

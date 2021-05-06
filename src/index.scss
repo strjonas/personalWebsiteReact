@@ -175,12 +175,16 @@ html {
   padding-left: 50px;
 }
 
+.icon-container-bookmarklinks {
+  margin: 3px;
+}
+
 .link {
   width: 100%;
   display: flex;
   justify-content: space-between;
   margin-left: 50px;
-  border-color: $sep-co;
+  background-color: $bg-co;
 }
 
 .d-tree-node {
