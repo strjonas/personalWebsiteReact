@@ -1,9 +1,18 @@
 import React, { useState } from "react";
-import { MdKeyboardArrowRight, MdFolder, MdDelete } from "react-icons/md";
+import {
+  MdKeyboardArrowRight,
+  MdFolder,
+  MdDelete,
+  MdContentCopy,
+  MdClose,
+} from "react-icons/md";
+import Snackbar from "@material-ui/core/Snackbar";
+import IconButton from "@material-ui/core/IconButton";
 import BookmarkTree from "./BookmarkTree";
 import EditLink from "./editLink";
 import NewFolder from "./newFolderPopup";
 import NewLink from "./newLink";
+import copy from "copy-to-clipboard";
 
 export default function TreeNode({ node, treeEventHandler, data }) {
   const [childVisible, setChildVisibility] = useState(false);
@@ -14,6 +23,25 @@ export default function TreeNode({ node, treeEventHandler, data }) {
   hasChild ? (islink = "") : (islink = "link");
   let ismain;
   node.folder !== "main" ? (ismain = "mainFolder") : (ismain = "");
+
+  // for snackbar
+
+  const [open, SetOpen] = useState(false);
+  const [message, SetMessage] = useState("");
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    SetOpen(false);
+  };
+
+  function copyf() {
+    copy(node.link);
+    SetMessage("Copied into clipboard");
+    SetOpen(true);
+  }
 
   function newFolder(e, name) {
     treeEventHandler(node, "newFolder", name);
@@ -59,7 +87,8 @@ export default function TreeNode({ node, treeEventHandler, data }) {
               <MdFolder onClick={(e) => setChildVisibility((v) => !v)} />
             </i>
           )}
-          <div>{node.link}</div>
+          {hasChild && <div>{node.link}</div>}
+          {!hasChild && <a href={node.link}>{node.link}</a>}
           <div>
             {hasChild && (
               <div className="row">
@@ -79,6 +108,7 @@ export default function TreeNode({ node, treeEventHandler, data }) {
             )}
             {!hasChild && (
               <div className="row">
+                <MdContentCopy onClick={() => copyf()} />
                 <EditLink
                   obj={{ id: `${node.id}editlink`, link: node.link }}
                   editLink={editLink}
@@ -90,7 +120,20 @@ export default function TreeNode({ node, treeEventHandler, data }) {
           </div>
         </div>
       </div>
-
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        open={open}
+        autoHideDuration={2000}
+        onClose={handleClose}
+        message={message}
+        action={
+          <React.Fragment>
+            <IconButton onClick={handleClose}>
+              <MdClose style={{ color: "white" }} />
+            </IconButton>
+          </React.Fragment>
+        }
+      />
       {hasChild && childVisible && (
         <div className="d-tree-content">
           <ul className="d-flex d-tree-container flex-column">

@@ -200,10 +200,10 @@ export default function BookmarkHandler() {
     }
   }
   function newFolder(obj, name) {
-    addFolder({ label: "main" }, name);
+    addFolder({ link: "main" }, name);
   }
   function newLink(obj, name) {
-    addBookmark({ label: "main" }, name);
+    addBookmark({ link: "main" }, name);
   }
 
   return (

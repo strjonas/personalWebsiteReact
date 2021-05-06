@@ -141,7 +141,9 @@ class App extends React.Component {
               <TasksHandler />
             </Tab>
             <Tab isSelected={this.state.selected === "Photo"}>
-              <div style={{ height: "80vh" }}>Photo</div>
+              <div style={{ height: "80vh" }}>
+                https://mlaursen.github.io/react-md-v1-docs/#/components/file-inputs
+              </div>
             </Tab>
           </TabNav>
         </div>
