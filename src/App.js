@@ -189,8 +189,7 @@ class App extends React.Component {
                 data-darkreader-inline-bgcolor=""
               >
                 <svg
-                  className="niftybutton-github"
-                  className="github-icon-svg"
+                  className="niftybutton-github github-icon-svg"
                   data-donate="true"
                   data-tag="git"
                   data-name="Github"

@@ -10,13 +10,13 @@ class TabNav extends React.Component {
 
             return (
               <li className="nav-item" key={tab}>
-                <a
+                <div
                   style={{ color: "white" }}
                   className={"nav-link" + active}
                   onClick={() => this.props.setSelected(tab)}
                 >
                   {tab}
-                </a>
+                </div>
               </li>
             );
           })}

@@ -8,6 +8,11 @@ const NewLink = ({ obj, editLink }) => {
     e.preventDefault();
     editLink(obj, inhalt2);
   };
+  const handleInput = (e) => {
+    if (e.key === "Enter") {
+      document.getElementById("newLinkDismiss").click(e);
+    }
+  };
 
   return (
     <Fragment>
@@ -41,6 +46,7 @@ const NewLink = ({ obj, editLink }) => {
                 type="text"
                 className="form-control"
                 value={inhalt2}
+                onKeyPress={(e) => handleInput(e)}
                 onChange={(e) => setinhalt2(e.target.value)}
               />
             </div>
@@ -49,6 +55,7 @@ const NewLink = ({ obj, editLink }) => {
               <button
                 type="button"
                 className="btn btn-warning"
+                id="newLinkDismiss"
                 data-dismiss="modal"
                 onClick={(e) => updateinhalt(e)}
               >

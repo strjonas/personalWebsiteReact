@@ -9,6 +9,14 @@ const NewFolder = ({ obj, newFolder }) => {
     newFolder(obj, inhalt);
   };
 
+  const handleInput = (e) => {
+    if (e.key === "Enter") {
+      document.getElementById("newFolderDismiss").click(e);
+    }
+  };
+
+  //document.getElementById("newFolderInput").addEventListener("key");
+
   return (
     <Fragment>
       <MdCreateNewFolder
@@ -39,6 +47,7 @@ const NewFolder = ({ obj, newFolder }) => {
             <div className="modal-body">
               <input
                 type="text"
+                onKeyPress={(e) => handleInput(e)}
                 className="form-control"
                 value={inhalt}
                 onChange={(e) => setinhalt(e.target.value)}
@@ -48,6 +57,7 @@ const NewFolder = ({ obj, newFolder }) => {
             <div className="modal-footer">
               <button
                 type="button"
+                id="newFolderDismiss"
                 className="btn btn-warning"
                 data-dismiss="modal"
                 onClick={(e) => updateinhalt(e)}

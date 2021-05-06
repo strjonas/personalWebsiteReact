@@ -4,88 +4,6 @@ import NewFolder from "./newFolderPopup";
 import NewLink from "./newLink";
 
 export default function BookmarkHandler() {
-  const treeData = [
-    {
-      key: "0",
-      label: "Documents",
-      folder: "main",
-      isfolder: "true",
-      children: [
-        {
-          key: "0-0",
-          label: "Private Documents",
-          folder: "Documents",
-          isfolder: "true",
-          children: [
-            {
-              key: "0-1-1",
-              label: "Document-0-1.doc",
-              folder: "Private Documents",
-              isfolder: "false",
-            },
-            {
-              key: "0-1-2",
-              label: "Document-0-2.doc",
-              folder: "Private Documents",
-              isfolder: "false",
-            },
-            {
-              key: "0-1-3",
-              label: "Document-0-3.doc",
-              folder: "Private Documents",
-              isfolder: "false",
-            },
-            {
-              key: "0-1-4",
-              label: "Document-0-4.doc",
-              folder: "Private Documents",
-              isfolder: "true",
-              children: [
-                {
-                  key: "0-1-1-1",
-                  label: "Document-0-1.doc",
-                  folder: "Very Private Documents",
-                  isfolder: "false",
-                },
-                {
-                  key: "0-1-2-1",
-                  label: "Document-0-2.doc",
-                  folder: "Very Private Documents",
-                  isfolder: "false",
-                },
-                {
-                  key: "0-1-3-1",
-                  label: "Document-0-3.doc",
-                  folder: "Very Private Documents",
-                  isfolder: "false",
-                },
-                {
-                  key: "0-1-4-1",
-                  label: "Document-0-4.doc",
-                  folder: "Very Private Documents",
-                  isfolder: "false",
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-    {
-      key: "0d",
-      label: "Desktop",
-      folder: "main",
-      isfolder: "true",
-      children: [
-        {
-          key: "0-1-4dd-1",
-          label: "Document-0-4.doc",
-          folder: "Very Private Documents",
-          isfolder: "false",
-        },
-      ],
-    },
-  ];
   const [data, setData] = useState();
 
   useEffect(() => {
@@ -197,6 +115,8 @@ export default function BookmarkHandler() {
       case "editLink":
         editBookmark(event, name);
         break;
+      default:
+        console.log("unvalid event");
     }
   }
   function newFolder(obj, name) {
@@ -215,7 +135,11 @@ export default function BookmarkHandler() {
               <div className="col-lg-8 text-left text-dark">
                 <div
                   className="row"
-                  style={{ color: "white", paddingLeft: "30px" }}
+                  style={{
+                    color: "white",
+                    paddingLeft: "30px",
+                    paddingBottom: "20px",
+                  }}
                 >
                   <NewFolder
                     obj={{ id: "newFolderMain", inhalt: "" }}
@@ -228,6 +152,7 @@ export default function BookmarkHandler() {
                 </div>
                 <BookmarkTree
                   nextOne="main"
+                  counter={1}
                   data={data}
                   treeEventHandler={treeEventHandler}
                 />

@@ -14,15 +14,13 @@ import NewFolder from "./newFolderPopup";
 import NewLink from "./newLink";
 import copy from "copy-to-clipboard";
 
-export default function TreeNode({ node, treeEventHandler, data }) {
+export default function TreeNode({ node, treeEventHandler, data, counter }) {
   const [childVisible, setChildVisibility] = useState(false);
   const hasChild = node.isfolder !== "false" ? true : false;
   let isfol;
   hasChild ? (isfol = "folder") : (isfol = "");
   let islink;
   hasChild ? (islink = "") : (islink = "link");
-  let ismain;
-  node.folder !== "main" ? (ismain = "mainFolder") : (ismain = "");
 
   // for snackbar
 
@@ -65,7 +63,7 @@ export default function TreeNode({ node, treeEventHandler, data }) {
 
   return (
     <li>
-      <div className={`d-flex ${ismain}`}>
+      <div className={`d-flex `} style={{ paddingLeft: `${counter * 20}px` }}>
         {hasChild && (
           <div
             className={`d-inline d-tree-toggler ${
@@ -138,6 +136,7 @@ export default function TreeNode({ node, treeEventHandler, data }) {
         <div className="d-tree-content">
           <ul className="d-flex d-tree-container flex-column">
             <BookmarkTree
+              counter={(counter += 1)}
               treeEventHandler={treeEventHandler}
               data={data}
               nextOne={node.link}
