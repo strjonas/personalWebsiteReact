@@ -14,9 +14,6 @@ const NewFolder = ({ obj, newFolder }) => {
       document.getElementById("newFolderDismiss").click(e);
     }
   };
-
-  //document.getElementById("newFolderInput").addEventListener("key");
-
   return (
     <Fragment>
       <MdCreateNewFolder

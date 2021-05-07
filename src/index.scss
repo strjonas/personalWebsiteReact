@@ -6,6 +6,10 @@ $fg-co: #e8e6e3;
 $red: #bf1209;
 $sep-co: #212222;
 
+body {
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+}
+
 .modal-header {
   background-color: $bg-co;
 }
