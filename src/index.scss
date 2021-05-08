@@ -10,6 +10,55 @@ body {
   font-family: Roboto, Helvetica, Arial, sans-serif;
 }
 
+.dragDrop {
+  border: 2px dashed grey;
+  margin: 10px;
+  height: 20vh;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+}
+.dragDropText {
+  color: white;
+  margin-top: 8vh;
+}
+
+.pictureCell-component {
+  height: 350px;
+  width: 600px;
+  padding: 0px;
+  border: 1px solid $fg-co;
+  border-radius: 8px;
+  white-space: nowrap;
+  margin: 10px;
+}
+.pictureCell-picture {
+  max-width: 698px;
+  max-height: 290px;
+  display: flex;
+}
+.pictureCell-header {
+  padding: 10px;
+  height: 50px;
+  width: auto;
+  border-bottom: 1px solid $fg-co;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.pictures {
+  margin: 10px;
+}
+
+md-gridlist {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  height: 100%;
+  flex-direction: row;
+}
+
 .modal-header {
   background-color: $bg-co;
 }
