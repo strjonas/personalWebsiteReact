@@ -3,6 +3,7 @@ import BookmarkTree from "./BookmarkTree";
 import NewFolder from "./newFolderPopup";
 import NewLink from "./newLink";
 import { Grid, GridCell } from "@react-md/utils";
+import Footer from "./Footer";
 
 export default function BookmarkHandler() {
   const [data, setData] = useState();
@@ -140,7 +141,15 @@ export default function BookmarkHandler() {
   return (
     <>
       <div className="row Bookmark-main">
-        <div className="col text-center">
+        <div
+          className=" text-center"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            width: "100%",
+          }}
+        >
           <div
             className="row"
             style={{
@@ -176,6 +185,10 @@ export default function BookmarkHandler() {
             </div>
           </div>
         </div>
+      </div>
+      <div className="third-seperator-tasks" />
+      <div className="footer-tasks">
+        <Footer />
       </div>
     </>
   );

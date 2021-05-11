@@ -5,6 +5,7 @@ import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
 import AddCatModal from "./addCatModal";
 import { DragDropContext } from "react-beautiful-dnd";
 import { CSVLink } from "react-csv";
+import Footer from "./Footer";
 
 export class DateRows extends Component {
   constructor(props) {
@@ -401,86 +402,92 @@ export class DateRows extends Component {
       data: data,
     };
     return (
-      <div>
-        <DragDropContext onDragEnd={this.handleOnDragEnd}>
-          <div
-            className="main-task-container"
-            style={{ padding: 0, margin: 0 }}
-          >
-            <div className="date-row-main-div">
-              <div onClick={this.leftClick} className="arrow-icon-container">
-                <MdKeyboardArrowLeft className="arrow-icons" />
+      <>
+        <div>
+          <DragDropContext onDragEnd={this.handleOnDragEnd}>
+            <div
+              className="main-task-container"
+              style={{ padding: 0, margin: 0 }}
+            >
+              <div className="date-row-main-div">
+                <div onClick={this.leftClick} className="arrow-icon-container">
+                  <MdKeyboardArrowLeft className="arrow-icons" />
+                </div>
+
+                <div id="rows2" className="innerContainer">
+                  {this.state.dates.map((date) => (
+                    <TaskClumnDays
+                      key={date}
+                      title={date}
+                      removeTask={this.removeTask}
+                      addTask={this.addTask}
+                      updateTask={this.updateTask}
+                      toggleDone={this.toogleDone}
+                      reorderTasks={this.reorderTasks}
+                      object={
+                        temp[
+                          date.split("-")[0] +
+                            "-" +
+                            date.split("-")[1] +
+                            "-" +
+                            date.split("-")[2]
+                        ]
+                      }
+                    />
+                  ))}
+                </div>
+                <div onClick={this.rightClick} className="arrow-icon-container">
+                  <MdKeyboardArrowRight className="arrow-icons" />
+                </div>
               </div>
 
-              <div id="rows2" className="innerContainer">
-                {this.state.dates.map((date) => (
-                  <TaskClumnDays
-                    key={date}
-                    title={date}
-                    removeTask={this.removeTask}
-                    addTask={this.addTask}
-                    updateTask={this.updateTask}
-                    toggleDone={this.toogleDone}
-                    reorderTasks={this.reorderTasks}
-                    object={
-                      temp[
-                        date.split("-")[0] +
-                          "-" +
-                          date.split("-")[1] +
-                          "-" +
-                          date.split("-")[2]
-                      ]
-                    }
+              <div className="middel-task-toolbar">
+                <div className="toolbar-div">
+                  <CSVLink {...csvReport}> Export </CSVLink>
+                  <AddCatModal
+                    obj={{ id: 10, inhalt: "" }}
+                    addCat={this.addOtherCat}
                   />
-                ))}
+                </div>
               </div>
-              <div onClick={this.rightClick} className="arrow-icon-container">
-                <MdKeyboardArrowRight className="arrow-icons" />
-              </div>
-            </div>
 
-            <div className="middel-task-toolbar">
-              <div className="toolbar-div">
-                <CSVLink {...csvReport}> Export </CSVLink>
-                <AddCatModal
-                  obj={{ id: 10, inhalt: "" }}
-                  addCat={this.addOtherCat}
-                />
+              <div className="date-row-main-div">
+                <div
+                  onClick={this.leftClickothers}
+                  className="arrow-icon-container"
+                >
+                  <MdKeyboardArrowLeft className="arrow-icons" />
+                </div>
+                <div className="innerContainer" id="rows1">
+                  {this.state.otherCats.map((cat) => (
+                    <TaskColumnOthers
+                      key={cat}
+                      deletekategorie={this.deletekategorie}
+                      title={cat}
+                      removeTask={this.removeTask}
+                      addTask={this.addTask}
+                      updateTask={this.updateTask}
+                      toggleDone={this.toogleDone}
+                      reorderTasks={this.reorderTasks}
+                      object={temp[cat]}
+                    />
+                  ))}
+                </div>
+                <div
+                  onClick={this.rightClickothers}
+                  className="arrow-icon-container"
+                >
+                  <MdKeyboardArrowRight className="arrow-icons" />
+                </div>
               </div>
             </div>
-
-            <div className="date-row-main-div">
-              <div
-                onClick={this.leftClickothers}
-                className="arrow-icon-container"
-              >
-                <MdKeyboardArrowLeft className="arrow-icons" />
-              </div>
-              <div className="innerContainer" id="rows1">
-                {this.state.otherCats.map((cat) => (
-                  <TaskColumnOthers
-                    key={cat}
-                    deletekategorie={this.deletekategorie}
-                    title={cat}
-                    removeTask={this.removeTask}
-                    addTask={this.addTask}
-                    updateTask={this.updateTask}
-                    toggleDone={this.toogleDone}
-                    reorderTasks={this.reorderTasks}
-                    object={temp[cat]}
-                  />
-                ))}
-              </div>
-              <div
-                onClick={this.rightClickothers}
-                className="arrow-icon-container"
-              >
-                <MdKeyboardArrowRight className="arrow-icons" />
-              </div>
-            </div>
-          </div>
-        </DragDropContext>
-      </div>
+          </DragDropContext>
+        </div>
+        <div className="third-seperator-tasks" />
+        <div className="footer-tasks">
+          <Footer />
+        </div>
+      </>
     );
   }
 }

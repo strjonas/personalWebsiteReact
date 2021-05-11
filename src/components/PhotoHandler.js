@@ -13,6 +13,7 @@ import {
   AppSizeListener,
 } from "@react-md/utils";
 import PictureCell from "./PictureCell";
+import Footer from "./Footer";
 
 export default function PhotoHandler() {
   const [pictures, setPictures] = useState([]);
@@ -69,28 +70,37 @@ export default function PhotoHandler() {
     },
   });
   return (
-    <React.Fragment>
-      <Configuration {...overrides}>
-        <Grid style={{}}>
-          <GridCell className="dragDrop">
-            <div {...getRootProps()}>
-              <input {...getInputProps()} />
-              <p className="dragDropText">Drop files here</p>
-            </div>
-          </GridCell>
-          <GridCell className="pictures">
-            <md-gridlist>
-              {pictures.map((picture) => (
-                <PictureCell
-                  key={picture.id}
-                  deletePicture={callDelete}
-                  obj={picture}
-                />
-              ))}
-            </md-gridlist>
-          </GridCell>
-        </Grid>
-      </Configuration>
-    </React.Fragment>
+    <>
+      <div style={{ minHeight: "80vh" }}>
+        <React.Fragment>
+          <Configuration {...overrides}>
+            <Grid style={{}}>
+              <GridCell className="dragDrop">
+                <div {...getRootProps()}>
+                  <input {...getInputProps()} />
+                  <p className="dragDropText">Drop files here</p>
+                </div>
+              </GridCell>
+              <GridCell className="pictures">
+                <md-gridlist>
+                  {pictures.map((picture) => (
+                    <PictureCell
+                      key={picture.id}
+                      deletePicture={callDelete}
+                      obj={picture}
+                    />
+                  ))}
+                </md-gridlist>
+              </GridCell>
+            </Grid>
+          </Configuration>
+        </React.Fragment>
+      </div>
+
+      <div className="third-seperator-tasks" />
+      <div className="footer-tasks">
+        <Footer />
+      </div>
+    </>
   );
 }
