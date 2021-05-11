@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import BookmarkTree from "./BookmarkTree";
 import NewFolder from "./newFolderPopup";
 import NewLink from "./newLink";
-import { Grid, GridCell } from "@react-md/utils";
 import Footer from "./Footer";
 
 export default function BookmarkHandler() {

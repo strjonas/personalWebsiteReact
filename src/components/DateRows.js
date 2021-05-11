@@ -21,6 +21,12 @@ export class DateRows extends Component {
       rawData: [{}],
     };
 
+    window.addEventListener("resize", () => {
+      this.setDates();
+      this.getOtherCats();
+      this.getTasks();
+    });
+
     this.setDates();
     this.getOtherCats();
     this.addTask = this.addTask.bind(this);
@@ -61,7 +67,7 @@ export class DateRows extends Component {
     let temp = [];
     for (
       let i = this.state.othersVerschiebung;
-      i < this.state.othersVerschiebung + 5;
+      i < this.state.othersVerschiebung + Math.floor(window.innerWidth / 360);
       i++
     ) {
       if (tempq[i] !== undefined && !temp.includes(tempq[i])) {
@@ -83,7 +89,7 @@ export class DateRows extends Component {
     ];
     var result = [];
     var dV = this.state.datumVerschiebung;
-    for (var i = dV; i < 5 + dV; i++) {
+    for (var i = dV; i < Math.floor(window.innerWidth / 360) + dV; i++) {
       var d = new Date();
       d.setDate(d.getDate() + i);
       let temp =

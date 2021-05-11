@@ -1,17 +1,8 @@
-import React, { useState, useEffect, ReactElement } from "react";
-import { MdFileUpload } from "react-icons/md";
-import { useNumberField } from "@react-md/form";
+import React, { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { firebaseApp } from "./../base";
-import { Configuration, ConfigurationProps } from "@react-md/layout";
-import {
-  Grid,
-  GridCell,
-  GridList,
-  GridListCell,
-  useGridListSize,
-  AppSizeListener,
-} from "@react-md/utils";
+import { Configuration } from "@react-md/layout";
+import { Grid, GridCell, useGridListSize } from "@react-md/utils";
 import PictureCell from "./PictureCell";
 import Footer from "./Footer";
 

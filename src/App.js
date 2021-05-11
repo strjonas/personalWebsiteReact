@@ -1,14 +1,11 @@
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import "./index.scss";
-import TabNav from "./components/TabNav";
-import Tab from "./components/tab";
 
 import TasksHandler from "./components/TasksHandler";
 import BookmarkHandler from "./components/BookmarkHandler";
 import PhotoHandler from "./components/PhotoHandler";
 import PastebinHandler from "./PastebinHandler";
-import Footer from "./components/Footer";
 import Navbar from "./components/Navbar2";
 
 function Landing() {
