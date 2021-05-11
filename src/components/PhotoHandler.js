@@ -32,6 +32,10 @@ export default function PhotoHandler() {
     });
   }
 
+  function callDelete(id) {
+    deletePicture(id);
+  }
+
   async function deletePicture(id) {
     const body = { id };
     await fetch("http://192.168.178.41:5000/pictures", {
@@ -40,13 +44,12 @@ export default function PhotoHandler() {
       body: JSON.stringify(body),
     });
 
-    console.log("deleted picture");
+    getPictures();
   }
   async function getPictures() {
     const response = await fetch("http://192.168.178.41:5000/pictures");
 
     const jsonData = await response.json();
-    console.log(jsonData);
     setPictures(jsonData);
   }
   async function addPicture(url) {
@@ -78,7 +81,11 @@ export default function PhotoHandler() {
           <GridCell className="pictures">
             <md-gridlist>
               {pictures.map((picture) => (
-                <PictureCell key={picture.id} obj={picture} />
+                <PictureCell
+                  key={picture.id}
+                  deletePicture={callDelete}
+                  obj={picture}
+                />
               ))}
             </md-gridlist>
           </GridCell>

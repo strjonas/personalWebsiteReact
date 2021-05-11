@@ -52,7 +52,11 @@ export class DateRows extends Component {
   async getOtherCats() {
     await this.getTasks();
     let tempq = await this.getCatList();
-    tempq = tempq.split("/");
+    try {
+      tempq = tempq.split("/");
+    } catch (error) {
+      return;
+    }
     let temp = [];
     for (
       let i = this.state.othersVerschiebung;
