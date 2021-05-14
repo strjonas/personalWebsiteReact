@@ -40,9 +40,13 @@ export default function PhotoHandler() {
   }
   async function getPictures() {
     const response = await fetch("http://192.168.178.41:5000/pictures");
-
-    const jsonData = await response.json();
-    setPictures(jsonData);
+    try {
+      const jsonData = await response.json();
+      setPictures(jsonData);
+    } catch (error) {
+      console.log(error);
+      setPictures([]);
+    }
   }
   async function addPicture(url) {
     const body = { url };
@@ -60,6 +64,17 @@ export default function PhotoHandler() {
       upload(acceptedFiles);
     },
   });
+  if (
+    (pictures === undefined) |
+    (pictures === null) |
+    (pictures === "error occured")
+  ) {
+    return (
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <p> connection error</p>
+      </div>
+    );
+  }
   return (
     <>
       <div style={{ minHeight: "80vh" }}>

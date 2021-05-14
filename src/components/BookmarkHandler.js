@@ -12,7 +12,15 @@ export default function BookmarkHandler() {
   }, []);
   async function fetchBookmarks() {
     const response = await fetch("http://192.168.178.41:5000/bookmarks");
-    const jsonData = await response.json();
+    let jsonData;
+    try {
+      jsonData = await response.json();
+    } catch (error) {
+      setData({});
+
+      console.log(error);
+      return;
+    }
     let oTasks = {};
     try {
       jsonData.forEach((task) => {

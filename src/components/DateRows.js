@@ -139,7 +139,7 @@ export class DateRows extends Component {
         await this.sortTasks(jsonData);
       }
     } catch (err) {
-      console.error(err.message);
+      console.error(err);
     }
   }
 
@@ -178,7 +178,7 @@ export class DateRows extends Component {
           body: JSON.stringify(body),
         });
       } catch (err) {
-        console.error(err.message);
+        console.error(err);
       }
     };
     await request(obj);
@@ -256,7 +256,7 @@ export class DateRows extends Component {
         body: JSON.stringify(body),
       });
     } catch (err) {
-      console.error(err.message);
+      console.error(err);
     }
 
     await this.getTasks();
@@ -325,7 +325,7 @@ export class DateRows extends Component {
         body: JSON.stringify(body),
       });
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
     }
     await this.getTasks();
   }
@@ -341,7 +341,7 @@ export class DateRows extends Component {
       });
       await this.getOtherCats();
     } catch (error) {
-      console.error(error.message);
+      console.error(error);
     }
   }
 
@@ -390,23 +390,33 @@ export class DateRows extends Component {
   }
 
   render() {
+    let csvReport;
     let temp = this.state.tasks;
     const data = JSON.parse(JSON.stringify(this.state.rawData));
-    for (let i in data) {
-      data[i].gmacht ? (data[i].gmacht = "true") : (data[i].gmacht = "false");
-      data[i].id = `${data[i].id}`;
+    if (!data.includes("error")) {
+      for (let i in data) {
+        data[i].gmacht ? (data[i].gmacht = "true") : (data[i].gmacht = "false");
+        data[i].id = `${data[i].id}`;
+      }
+      const headers = [
+        { label: "ID", key: "id" },
+        { label: "Kategorie", key: "kategorie" },
+        { label: "Inhalt", key: "inhalt" },
+        { label: "Erledigt", key: "gmacht" },
+      ];
+      csvReport = {
+        filename: "tasks.csv",
+        headers: headers,
+        data: data,
+      };
+    } else {
+      csvReport = {
+        filename: "tasks.csv",
+        headers: [],
+        data: [],
+      };
     }
-    const headers = [
-      { label: "ID", key: "id" },
-      { label: "Kategorie", key: "kategorie" },
-      { label: "Inhalt", key: "inhalt" },
-      { label: "Erledigt", key: "gmacht" },
-    ];
-    const csvReport = {
-      filename: "tasks.csv",
-      headers: headers,
-      data: data,
-    };
+
     return (
       <>
         <div>

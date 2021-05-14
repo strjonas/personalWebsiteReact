@@ -20,8 +20,13 @@ export default class PastebinHandler extends Component {
   async getBins() {
     try {
       const response = await fetch("http://192.168.178.41:5000/bins");
-      const jsonData = await response.json();
-      this.setState({ bins: jsonData });
+      try {
+        const jsonData = await response.json();
+        this.setState({ bins: jsonData });
+      } catch (error) {
+        this.setState({ bins: [] });
+        console.log(error);
+      }
     } catch (err) {
       console.error(err.message);
     }
@@ -81,6 +86,18 @@ export default class PastebinHandler extends Component {
   };
 
   render() {
+    if (
+      (this.state.bins === undefined) |
+      (this.state.bins === null) |
+      (this.state.bins.length === 0) |
+      (this.state.bins === "error occured")
+    ) {
+      return (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <p> connection error</p>
+        </div>
+      );
+    }
     return (
       <>
         <div style={{ height: "80vh" }}>
