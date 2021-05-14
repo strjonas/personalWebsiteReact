@@ -5,7 +5,7 @@
   padding-bottom: 10;
   margin-bottom: 10px;
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
 }
 
@@ -18,7 +18,7 @@
 .nav-menu {
   z-index: 10;
   background-color: #bf1209;
-  width: 220px;
+  width: 250px;
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -35,7 +35,7 @@
 
 .nav-text {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
   padding: 8px 0px 8px 16px;
   list-style: none;
@@ -67,7 +67,7 @@
   width: 100%;
   height: 60px;
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
 }
 

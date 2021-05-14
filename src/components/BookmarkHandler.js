@@ -55,7 +55,13 @@ export default function BookmarkHandler() {
   }
 
   async function editBookmark(obj, name) {
-    console.log(`changing bookmark to ${name}`);
+    console.log(`changing bookmark to ${name} ${obj.id}`);
+    const body = { name: name, id: obj.id };
+    await fetch("http://192.168.178.41:5000/bookmarks", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
     await fetchBookmarks();
   }
 
@@ -110,7 +116,6 @@ export default function BookmarkHandler() {
         }
       );
       await fetchBookmarks();
-      console.log(response);
     } catch (error) {
       console.log(error);
     }

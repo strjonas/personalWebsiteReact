@@ -150,7 +150,7 @@ export class DateRows extends Component {
   }
 
   async addTask(obj, kategorie) {
-    const task = obj.target.value;
+    const task = obj;
     if (task.includes(";")) {
       return;
     }
@@ -168,7 +168,6 @@ export class DateRows extends Component {
 
     kategorie = temp;
     const request = async (obj) => {
-      obj.preventDefault();
       try {
         let inhalt = task;
         const body = { kategorie, inhalt, gmacht };
@@ -265,9 +264,14 @@ export class DateRows extends Component {
   async getCatList() {
     try {
       const response = await fetch("http://192.168.178.41:5000/tasks/cats");
-      const jsonData = await response.json();
-      let liste = jsonData[0]["liste"];
-      return liste;
+      try {
+        const jsonData = await response.json();
+        console.log(jsonData);
+        let liste = jsonData[0]["liste"];
+        return liste;
+      } catch (error) {
+        console.log(error);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -285,6 +289,7 @@ export class DateRows extends Component {
     try {
       let newListe = temp.join("/");
       const body = { newListe: newListe };
+
       await fetch(`http://192.168.178.41:5000/tasks/cats/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -301,7 +306,14 @@ export class DateRows extends Component {
         return;
       }
       let liste = await this.getCatList();
-      let newListe = liste + "/" + cat;
+      let newListe;
+      if (liste === undefined) {
+        newListe = cat;
+      } else {
+        newListe = liste + "/" + cat;
+      }
+
+      console.log(newListe);
       const body = { newListe: newListe };
       await fetch(`http://192.168.178.41:5000/tasks/cats/add`, {
         method: "POST",

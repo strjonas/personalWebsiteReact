@@ -10,7 +10,7 @@ const NewLink = ({ obj, editLink }) => {
   };
   const handleInput = (e) => {
     if (e.key === "Enter") {
-      document.getElementById("newLinkDismiss").click(e);
+      document.getElementById(`newLinkDismiss${obj.id}`).click(e);
     }
   };
 
@@ -55,7 +55,7 @@ const NewLink = ({ obj, editLink }) => {
               <button
                 type="button"
                 className="btn btn-warning"
-                id="newLinkDismiss"
+                id={`newLinkDismiss${obj.id}`}
                 data-dismiss="modal"
                 onClick={(e) => updateinhalt(e)}
               >

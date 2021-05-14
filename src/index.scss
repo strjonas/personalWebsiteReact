@@ -104,6 +104,18 @@ html {
   padding-bottom: 25px;
 }
 
+.verdunklerMain {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 80vw;
+  height: 100vh;
+  transition: 300ms;
+  z-index: 999;
+  background-color: black;
+  opacity: 90%;
+}
+
 .con {
   background-color: $bg-co;
   border: 1px solid;

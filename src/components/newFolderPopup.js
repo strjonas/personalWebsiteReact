@@ -4,6 +4,7 @@ import { MdCreateNewFolder } from "react-icons/md";
 const NewFolder = ({ obj, newFolder }) => {
   const [inhalt, setinhalt] = useState(obj.link);
   if (inhalt === null || inhalt === undefined) setinhalt("");
+
   const updateinhalt = async (e) => {
     e.preventDefault();
     newFolder(obj, inhalt);
@@ -11,7 +12,7 @@ const NewFolder = ({ obj, newFolder }) => {
 
   const handleInput = (e) => {
     if (e.key === "Enter") {
-      document.getElementById("newFolderDismiss").click(e);
+      document.getElementById(`newFolderDismiss${obj.id}`).click(e);
     }
   };
   return (
@@ -44,6 +45,7 @@ const NewFolder = ({ obj, newFolder }) => {
             <div className="modal-body">
               <input
                 type="text"
+                id={`inp${obj.id}`}
                 onKeyPress={(e) => handleInput(e)}
                 className="form-control"
                 value={inhalt}
@@ -54,7 +56,7 @@ const NewFolder = ({ obj, newFolder }) => {
             <div className="modal-footer">
               <button
                 type="button"
-                id="newFolderDismiss"
+                id={`newFolderDismiss${obj.id}`}
                 className="btn btn-warning"
                 data-dismiss="modal"
                 onClick={(e) => updateinhalt(e)}

@@ -22,7 +22,7 @@ export default function TaskColumnRows({
   }
   function onLooseFocus(e) {
     if (e.target.value !== "") {
-      addTask(e, title);
+      addTask(val, title);
     }
   }
   function donetoggle(e) {
@@ -31,6 +31,11 @@ export default function TaskColumnRows({
   function removeTaskhere(e) {
     removeTask(objectRowCon);
   }
+  const handleInput = (e) => {
+    if (e.key === "Enter") {
+      addTask(val, title);
+    }
+  };
 
   if (updateTask === null) updateTask = undefined;
   if (objectRowCon === null) objectRowCon = undefined;
@@ -73,6 +78,7 @@ export default function TaskColumnRows({
           }}
           type="text"
           value={val}
+          onKeyPress={(e) => handleInput(e)}
           onChange={onTextChange}
           onBlur={onLooseFocus}
         ></input>

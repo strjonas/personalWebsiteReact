@@ -15,6 +15,7 @@ export default class PastebinHandler extends Component {
     this.deleteBin = this.deleteBin.bind(this);
     this.addBin = this.addBin.bind(this);
     this.getBins = this.getBins.bind(this);
+    this.handlekey = this.handlekey.bind(this);
   }
 
   async getBins() {
@@ -57,8 +58,7 @@ export default class PastebinHandler extends Component {
     const bin = this.state.inpval;
     if (bin === "") return;
 
-    const request = async (e) => {
-      e.preventDefault();
+    const request = async () => {
       try {
         let description = bin;
         const body = { description };
@@ -76,6 +76,12 @@ export default class PastebinHandler extends Component {
     this.setState({ inpval: "" });
   }
 
+  handlekey(e) {
+    if (e.key === "Enter") {
+      this.addBin();
+    }
+  }
+
   handleInput = (event) => {
     let str = JSON.stringify(event.target.value);
     if (str.includes("<script>") || str.includes(";")) {
@@ -89,7 +95,6 @@ export default class PastebinHandler extends Component {
     if (
       (this.state.bins === undefined) |
       (this.state.bins === null) |
-      (this.state.bins.length === 0) |
       (this.state.bins === "error occured")
     ) {
       return (
@@ -109,6 +114,7 @@ export default class PastebinHandler extends Component {
                   id="pastebin-input"
                   type="text"
                   onChange={this.handleInput}
+                  onKeyPress={(e) => this.handlekey(e)}
                   className="form-control pastebin-input-field"
                   value={this.state.inpval}
                   style={{ width: "auto" }}
