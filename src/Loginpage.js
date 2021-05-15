@@ -3,9 +3,6 @@ import React, { Component } from "react";
 export default class Loginpage extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      auth: props.auth,
-    };
   }
   render() {
     return (
@@ -13,8 +10,10 @@ export default class Loginpage extends Component {
         <h1>LOGIN PAGE</h1>
         <button
           onClick={() => {
+            console.log(this.props);
             this.props.auth.login(() => {
-              this.props.setauth(true);
+              this.props.setisauth(true);
+
               this.props.props.history.push("/tasks");
             });
           }}

@@ -5,8 +5,9 @@ import { Link } from "react-router-dom";
 import { SidebarData } from "./SidebarData";
 import "./Navbar.css";
 import { IconContext } from "react-icons";
+import Button from "react-bootstrap/Button";
 
-function Navbar({ show }) {
+function Navbar({ props, setisauth, auth, show }) {
   const [sidebar, setSidebar] = useState(false);
   const showSidebar = () => {
     show();
@@ -20,6 +21,21 @@ function Navbar({ show }) {
           <Link to="#" className="menu-bars">
             <FaIcons.FaBars onClick={showSidebar} />
           </Link>
+          <div className="caps" style={{ fontSize: "20px" }}>
+            {window.location.pathname.replace("/", "")}
+          </div>
+          <Button
+            onClick={() =>
+              auth.logout(() => {
+                props.history.push("/");
+                setisauth(false);
+              })
+            }
+            className="caps"
+            id="logout-button"
+          >
+            logout
+          </Button>
         </div>
         <nav className={sidebar ? "nav-menu active" : "nav-menu"}>
           <ul className="nav-menu-items" onClick={showSidebar}>

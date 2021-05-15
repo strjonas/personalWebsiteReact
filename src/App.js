@@ -13,14 +13,29 @@ import { ProtectedRoute } from "./protected.route";
 
 function App() {
   const [show, setShow] = useState(false);
-  const [isauth, setauth] = useState(false);
+  const [isauth, setisauth] = useState(false);
+
   function showPopup() {
     setShow(!show);
   }
   return (
     <>
       <Router>
-        {auth.authenticated && <Navbar show={showPopup} />}
+        <Route
+          render={(props) => (
+            <div>
+              {isauth && (
+                <Navbar
+                  auth={auth}
+                  setisauth={setisauth}
+                  props={props}
+                  show={showPopup}
+                />
+              )}
+            </div>
+          )}
+        />
+
         {show && (
           <div
             style={{ width: window.innerWidth - 250 }}
@@ -33,7 +48,7 @@ function App() {
             path="/"
             exact
             render={(props) => (
-              <Loginpage auth={auth} setauth={setauth} props={props} />
+              <Loginpage auth={auth} setisauth={setisauth} props={props} />
             )}
           />
           <ProtectedRoute path="/pastebin" component={PastebinHandler} />

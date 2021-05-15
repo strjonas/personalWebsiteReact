@@ -1,5 +1,6 @@
 @import "style/config";
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap");
+@import "~@react-md/button/dist/mixins";
 
 $bg-co: #181a1b;
 $fg-co: #e8e6e3;
@@ -51,6 +52,16 @@ body {
   margin: 10px;
 }
 
+#logout-button {
+  height: 30px;
+  text-align: center;
+  vertical-align: center;
+  padding-top: 4px;
+  font-size: 13px;
+  border: 1px solid white;
+  background-color: $red;
+}
+
 md-gridlist {
   display: flex;
   flex-wrap: wrap;
@@ -61,6 +72,11 @@ md-gridlist {
 
 .modal-header {
   background-color: $bg-co;
+}
+.caps {
+  text-transform: uppercase;
+  font-weight: 500;
+  font-family: sans-serif;
 }
 
 .modal-body {
@@ -113,7 +129,7 @@ html {
   transition: 300ms;
   z-index: 999;
   background-color: black;
-  opacity: 90%;
+  opacity: 80%;
 }
 
 .con {
