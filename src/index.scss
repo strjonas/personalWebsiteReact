@@ -101,6 +101,25 @@ html {
   background-color: $bg-co;
 }
 
+.login-container {
+  display: flex;
+  justify-content: center;
+  padding-top: 50px;
+}
+.login-inner-container {
+  display: flex;
+  flex-direction: column;
+}
+.login-button {
+  padding: 2px;
+}
+.login-heading {
+  padding-bottom: 50px;
+}
+.login-input {
+  margin: 10px;
+}
+
 .third-seperator-tasks {
   background-color: $red;
   height: 10px;
@@ -126,10 +145,10 @@ html {
   top: 0;
   width: 80vw;
   height: 100vh;
-  transition: 300ms;
+  transition: 230ms;
   z-index: 999;
   background-color: black;
-  opacity: 80%;
+  opacity: 5%;
 }
 
 .con {
