@@ -10,10 +10,12 @@ class Auth {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
+    let isRight = false;
     if (response.status === 200) {
       this.authenticated = true;
-      cb();
+      isRight = true;
     }
+    cb(isRight);
   }
 
   logout(cb) {

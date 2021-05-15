@@ -266,7 +266,6 @@ export class DateRows extends Component {
       const response = await fetch("http://192.168.178.41:5000/tasks/cats");
       try {
         const jsonData = await response.json();
-        console.log(jsonData);
         let liste = jsonData[0]["liste"];
         return liste;
       } catch (error) {
