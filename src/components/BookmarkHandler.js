@@ -11,7 +11,7 @@ export default function BookmarkHandler() {
     fetchBookmarks();
   }, []);
   async function fetchBookmarks() {
-    const response = await fetch("http://192.168.178.41:5000/bookmarks");
+    const response = await fetch("https://localwebapi.herokuapp.com/bookmarks");
     let jsonData;
     try {
       jsonData = await response.json();
@@ -57,7 +57,7 @@ export default function BookmarkHandler() {
   async function editBookmark(obj, name) {
     console.log(`changing bookmark to ${name} ${obj.id}`);
     const body = { name: name, id: obj.id };
-    await fetch("http://192.168.178.41:5000/bookmarks", {
+    await fetch("https://localwebapi.herokuapp.com/bookmarks", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -71,7 +71,7 @@ export default function BookmarkHandler() {
     let isfolder = "false";
     const body = { link, folder, isfolder };
     console.log(body);
-    await fetch("http://192.168.178.41:5000/bookmarks/add", {
+    await fetch("https://localwebapi.herokuapp.com/bookmarks/add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -80,7 +80,7 @@ export default function BookmarkHandler() {
   }
   async function deleteBookmark(obj) {
     try {
-      await fetch(`http://192.168.178.41:5000/bookmarks/${obj["id"]}`, {
+      await fetch(`https://localwebapi.herokuapp.com/bookmarks/${obj["id"]}`, {
         method: "DELETE",
       });
     } catch (err) {
@@ -95,7 +95,7 @@ export default function BookmarkHandler() {
     let isfolder = "true";
     const body = { link, folder, isfolder };
     console.log(body);
-    await fetch("http://192.168.178.41:5000/bookmarks/add", {
+    await fetch("https://localwebapi.herokuapp.com/bookmarks/add", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -108,7 +108,7 @@ export default function BookmarkHandler() {
     const body = { id, name };
     try {
       const response = await fetch(
-        "http://192.168.178.41:5000/delete/bookmarks",
+        "https://localwebapi.herokuapp.com/delete/bookmarks",
         {
           method: "delete",
           headers: { "Content-Type": "application/json" },

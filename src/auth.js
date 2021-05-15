@@ -5,7 +5,7 @@ class Auth {
 
   async login(password, cb) {
     const body = { password };
-    const response = await fetch("http://192.168.178.41:5000/login", {
+    const response = await fetch("https://localwebapi.herokuapp.com/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),

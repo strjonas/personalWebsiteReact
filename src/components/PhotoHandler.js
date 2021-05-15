@@ -30,7 +30,7 @@ export default function PhotoHandler() {
 
   async function deletePicture(id) {
     const body = { id };
-    await fetch("http://192.168.178.41:5000/pictures", {
+    await fetch("https://localwebapi.herokuapp.com/pictures", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -39,7 +39,7 @@ export default function PhotoHandler() {
     getPictures();
   }
   async function getPictures() {
-    const response = await fetch("http://192.168.178.41:5000/pictures");
+    const response = await fetch("https://localwebapi.herokuapp.com/pictures");
     try {
       const jsonData = await response.json();
       setPictures(jsonData);
@@ -50,7 +50,7 @@ export default function PhotoHandler() {
   }
   async function addPicture(url) {
     const body = { url };
-    await fetch("http://192.168.178.41:5000/pictures", {
+    await fetch("https://localwebapi.herokuapp.com/pictures", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),

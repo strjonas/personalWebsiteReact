@@ -132,7 +132,7 @@ export class DateRows extends Component {
 
   async getTasks() {
     try {
-      const response = await fetch("http://192.168.178.41:5000/tasks");
+      const response = await fetch("https://localwebapi.herokuapp.com/tasks");
       const jsonData = await response.json();
       this.state.rawData = jsonData;
       if (jsonData !== undefined) {
@@ -144,7 +144,7 @@ export class DateRows extends Component {
   }
 
   async returnTasks() {
-    const response = await fetch("http://192.168.178.41:5000/tasks");
+    const response = await fetch("https://localwebapi.herokuapp.com/tasks");
     const jsonData = await response.json();
     return jsonData;
   }
@@ -171,7 +171,7 @@ export class DateRows extends Component {
       try {
         let inhalt = task;
         const body = { kategorie, inhalt, gmacht };
-        await fetch("http://192.168.178.41:5000/tasks", {
+        await fetch("https://localwebapi.herokuapp.com/tasks", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
@@ -186,7 +186,7 @@ export class DateRows extends Component {
 
   async removeTask(id) {
     try {
-      await fetch(`http://192.168.178.41:5000/tasks/${id["id"]}`, {
+      await fetch(`https://localwebapi.herokuapp.com/tasks/${id["id"]}`, {
         method: "DELETE",
       });
     } catch (err) {
@@ -205,7 +205,7 @@ export class DateRows extends Component {
     let id = result.draggableId;
     try {
       let body = { newkat: newkat, id: id };
-      await fetch(`http://192.168.178.41:5000/kategorie/tasks`, {
+      await fetch(`https://localwebapi.herokuapp.com/kategorie/tasks`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -232,7 +232,7 @@ export class DateRows extends Component {
     }
     try {
       let body = { os: os, od: od };
-      await fetch(`http://192.168.178.41:5000/switch/tasks`, {
+      await fetch(`https://localwebapi.herokuapp.com/switch/tasks`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -249,7 +249,7 @@ export class DateRows extends Component {
         return;
       }
       const body = { newInhalt };
-      await fetch(`http://192.168.178.41:5000/tasks/${obj["id"]}`, {
+      await fetch(`https://localwebapi.herokuapp.com/tasks/${obj["id"]}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -263,7 +263,7 @@ export class DateRows extends Component {
 
   async getCatList() {
     try {
-      const response = await fetch("http://192.168.178.41:5000/tasks/cats");
+      const response = await fetch("https://localwebapi.herokuapp.com/tasks/cats");
       try {
         const jsonData = await response.json();
         let liste = jsonData[0]["liste"];
@@ -289,7 +289,7 @@ export class DateRows extends Component {
       let newListe = temp.join("/");
       const body = { newListe: newListe };
 
-      await fetch(`http://192.168.178.41:5000/tasks/cats/add`, {
+      await fetch(`https://localwebapi.herokuapp.com/tasks/cats/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -314,7 +314,7 @@ export class DateRows extends Component {
 
       console.log(newListe);
       const body = { newListe: newListe };
-      await fetch(`http://192.168.178.41:5000/tasks/cats/add`, {
+      await fetch(`https://localwebapi.herokuapp.com/tasks/cats/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -330,7 +330,7 @@ export class DateRows extends Component {
     gmacht ? (param = "FALSE") : (param = "TRUE");
     const body = { param };
     try {
-      await fetch(`http://192.168.178.41:5000/tasks/state/${obj["id"]}`, {
+      await fetch(`https://localwebapi.herokuapp.com/tasks/state/${obj["id"]}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -345,7 +345,7 @@ export class DateRows extends Component {
     try {
       const body = { kategorie };
       await this.deleteCat(kategorie);
-      await fetch(`http://192.168.178.41:5000/all/tasks`, {
+      await fetch(`https://localwebapi.herokuapp.com/all/tasks`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
