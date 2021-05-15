@@ -3,17 +3,17 @@ class Auth {
     this.authenticated = false;
   }
 
-  async login(cb) {
-    const password = "sanoj1809";
-
+  async login(password, cb) {
     const body = { password };
-    await fetch("http://192.168.178.41:5000/login", {
+    const response = await fetch("http://192.168.178.41:5000/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
-    this.authenticated = true;
-    cb();
+    if (response.status === 200) {
+      this.authenticated = true;
+      cb();
+    }
   }
 
   logout(cb) {
