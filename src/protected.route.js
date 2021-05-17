@@ -3,6 +3,7 @@ import { Route, Redirect } from "react-router-dom";
 import auth from "./auth";
 
 export const ProtectedRoute = ({ component: Component, ...rest }) => {
+  localStorage.setItem("path", window.location.pathname);
   return (
     <Route
       {...rest}

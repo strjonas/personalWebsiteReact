@@ -12,6 +12,9 @@ class Auth {
     });
     let isRight = false;
     if (response.status === 200) {
+      const res = await fetch("https://localwebapi.herokuapp.com/session");
+      const session = await res.json();
+      localStorage.setItem("session", session);
       this.authenticated = true;
       isRight = true;
     }
@@ -19,6 +22,7 @@ class Auth {
   }
 
   logout(cb) {
+    localStorage.removeItem("session");
     this.authenticated = false;
     cb();
   }

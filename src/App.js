@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import "./App.css";
 import "./index.scss";
 import React, { useState } from "react";
@@ -14,6 +19,15 @@ import { ProtectedRoute } from "./protected.route";
 function App() {
   const [show, setShow] = useState(false);
   const [isauth, setisauth] = useState(false);
+  let loc;
+  let redir = false;
+  try {
+    loc = localStorage.getItem("path");
+    if (loc !== undefined && loc !== null && loc !== "") {
+      localStorage.removeItem("path");
+      redir = true;
+    }
+  } catch (error) {}
 
   let opacity = 0;
 
@@ -49,6 +63,7 @@ function App() {
   return (
     <>
       <Router>
+        {redir && <Redirect to={`${loc}`} />}
         <Route
           render={(props) => (
             <div>
@@ -63,8 +78,7 @@ function App() {
             </div>
           )}
         />
-
-        {show && (
+        {show && window.innerWidth >= 460 && (
           <div
             id="verdunklerMain"
             style={{ width: window.innerWidth - 250 }}

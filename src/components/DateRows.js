@@ -19,12 +19,16 @@ export class DateRows extends Component {
       othersVerschiebung: 0,
       CatList: [],
       rawData: [{}],
+      columns: Math.floor((window.innerWidth - 65) / 360),
     };
 
     window.addEventListener("resize", () => {
-      this.setDates();
-      this.getOtherCats();
-      this.getTasks();
+      if (Math.floor((window.innerWidth - 65) / 360) !== this.state.columns) {
+        this.setDates();
+        this.getOtherCats();
+        this.getTasks();
+      }
+      this.setState({ columns: Math.floor((window.innerWidth - 65) / 360) });
     });
 
     this.setDates();
@@ -67,7 +71,9 @@ export class DateRows extends Component {
     let temp = [];
     for (
       let i = this.state.othersVerschiebung;
-      i < this.state.othersVerschiebung + Math.floor(window.innerWidth / 360);
+      i <
+      this.state.othersVerschiebung +
+        Math.floor((window.innerWidth - 65) / 360);
       i++
     ) {
       if (tempq[i] !== undefined && !temp.includes(tempq[i])) {
@@ -89,7 +95,7 @@ export class DateRows extends Component {
     ];
     var result = [];
     var dV = this.state.datumVerschiebung;
-    for (var i = dV; i < Math.floor(window.innerWidth / 360) + dV; i++) {
+    for (var i = dV; i < Math.floor((window.innerWidth - 65) / 360) + dV; i++) {
       var d = new Date();
       d.setDate(d.getDate() + i);
       let temp =
@@ -263,7 +269,9 @@ export class DateRows extends Component {
 
   async getCatList() {
     try {
-      const response = await fetch("https://localwebapi.herokuapp.com/tasks/cats");
+      const response = await fetch(
+        "https://localwebapi.herokuapp.com/tasks/cats"
+      );
       try {
         const jsonData = await response.json();
         let liste = jsonData[0]["liste"];
@@ -330,11 +338,14 @@ export class DateRows extends Component {
     gmacht ? (param = "FALSE") : (param = "TRUE");
     const body = { param };
     try {
-      await fetch(`https://localwebapi.herokuapp.com/tasks/state/${obj["id"]}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
+      await fetch(
+        `https://localwebapi.herokuapp.com/tasks/state/${obj["id"]}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
+      );
     } catch (error) {
       console.error(error);
     }
@@ -363,8 +374,7 @@ export class DateRows extends Component {
     this.updateDateShift(1);
   }
   async updateDateShiftothers(val) {
-    console.log(this.state.otherCats);
-    if (val === 1 && this.state.otherCats.length < 5) return;
+    //if (val === 1 && this.state.otherCats.length < 5) return;
     if (val === -1 && this.state.othersVerschiebung === 0) return;
     this.state.othersVerschiebung = this.state.othersVerschiebung + val;
     this.getOtherCats();

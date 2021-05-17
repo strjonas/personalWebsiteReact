@@ -3,6 +3,7 @@
   background-color: #bf1209;
   height: 50px;
   padding-bottom: 10;
+  min-width: 440px;
   margin-bottom: 10px;
   display: flex;
   justify-content: space-between;

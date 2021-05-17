@@ -1,4 +1,4 @@
-import React, { Component, setState } from "react";
+import React, { Component } from "react";
 import { MdClose } from "react-icons/md";
 import IconButton from "@material-ui/core/IconButton";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -7,14 +7,30 @@ import Button from "react-bootstrap/Button";
 export default class Loginpage extends Component {
   constructor(props) {
     super(props);
+    localStorage.setItem("path", window.location.pathname);
     this.state = {
       val: "",
       open: false,
       message: "",
     };
+    const isautht = this.checkIfAuthenticatet();
+    if (isautht) {
+      this.props.auth.authenticated = true;
+      this.props.setisauth(true);
+      this.props.props.history.push("/tasks");
+    }
     this.handleClose = this.handleClose.bind(this);
     this.onKeyPress = this.onKeyPress.bind(this);
   }
+
+  checkIfAuthenticatet() {
+    const session = localStorage.getItem("session");
+    if (session === "234lafdja83lahdf00ahjh4") {
+      return true;
+    }
+    return false;
+  }
+
   handleClose(event, reason) {
     if (reason === "clickaway") {
       return;
