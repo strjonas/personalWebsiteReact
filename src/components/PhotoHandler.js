@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
+import { firebaseApp } from "./../base";
 import { Configuration } from "@react-md/layout";
 import { Grid, GridCell, useGridListSize } from "@react-md/utils";
 import PictureCell from "./PictureCell";
@@ -7,19 +8,20 @@ import Footer from "./Footer";
 
 export default function PhotoHandler() {
   const [pictures, setPictures] = useState([]);
+  const { columns, cellWidth } = useGridListSize();
   const overrides = {};
 
   useEffect(() => getPictures(), []);
 
   async function upload(acceptedFiles) {
-    // const upFile = acceptedFiles[0];
-    // if (upFile === null || upFile === undefined) return;
-    // const storageRef = firebaseApp.storage().ref();
-    // const fileRef = storageRef.child(upFile.name);
-    // await fileRef.put(upFile);
-    // await fileRef.getDownloadURL().then(function (url) {
-    //   addPicture(url);
-    // });
+    const upFile = acceptedFiles[0];
+    if (upFile === null || upFile === undefined) return;
+    const storageRef = firebaseApp.storage().ref();
+    const fileRef = storageRef.child(upFile.name);
+    await fileRef.put(upFile);
+    await fileRef.getDownloadURL().then(function (url) {
+      addPicture(url);
+    });
   }
 
   function callDelete(id) {
