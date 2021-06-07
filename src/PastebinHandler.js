@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Footer from "./components/Footer";
 import Pastebins from "./components/Pastebins";
 
-const backendPath = "https://localwebapi.herokuapp.com";
+const backendPath = "https://${process.env.REACT_APP_API}";
 
 export default class PastebinHandler extends Component {
   constructor(props) {
@@ -22,7 +22,7 @@ export default class PastebinHandler extends Component {
 
   async getBins() {
     try {
-      const response = await fetch("https://localwebapi.herokuapp.com/bins");
+      const response = await fetch(`https://${process.env.REACT_APP_API}/bins`);
       try {
         const jsonData = await response.json();
         this.setState({ bins: jsonData });
@@ -37,7 +37,7 @@ export default class PastebinHandler extends Component {
 
   async deleteReq(id) {
     try {
-      await fetch(`https://localwebapi.herokuapp.com/bins/${id}`, {
+      await fetch(`https://${process.env.REACT_APP_API}/bins/${id}`, {
         method: "DELETE",
       });
     } catch (err) {
@@ -64,7 +64,7 @@ export default class PastebinHandler extends Component {
       try {
         let description = bin;
         const body = { description };
-        await fetch("https://localwebapi.herokuapp.com/bins", {
+        await fetch(`https://${process.env.REACT_APP_API}/bins`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),

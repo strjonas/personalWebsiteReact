@@ -15,6 +15,7 @@ import PastebinHandler from "./PastebinHandler";
 import Navbar from "./components/Navbar2";
 import Loginpage from "./Loginpage";
 import { ProtectedRoute } from "./protected.route";
+import bcrypt from "bcryptjs";
 
 function App() {
   const [show, setShow] = useState(false);
@@ -59,7 +60,20 @@ function App() {
     }
     setShow(!show);
   }
+  const session = localStorage.getItem("session");
+  try {
+    var hash = "$2a$10$LcRPoM/3q4eHnqYjQqLuN.9fO.oY8p1scDoLdH0oGbNOp4eWd8lWK";
+    let temp;
+    if (session !== null) {
+      temp = bcrypt.compareSync(session, hash);
+    }
 
+    if (isauth !== temp) {
+      setisauth(temp);
+    }
+  } catch (err) {
+    console.log(err);
+  }
   return (
     <>
       <Router>

@@ -3,6 +3,7 @@ import { MdClose } from "react-icons/md";
 import IconButton from "@material-ui/core/IconButton";
 import Snackbar from "@material-ui/core/Snackbar";
 import Button from "react-bootstrap/Button";
+import bcrypt from "bcryptjs";
 
 export default class Loginpage extends Component {
   constructor(props) {
@@ -13,22 +14,31 @@ export default class Loginpage extends Component {
       open: false,
       message: "",
     };
-    const isautht = this.checkIfAuthenticatet();
-    if (isautht) {
-      this.props.auth.authenticated = true;
-      this.props.setisauth(true);
-      this.props.props.history.push("/tasks");
-    }
+    this.checkIfAuthenticatet();
+
     this.handleClose = this.handleClose.bind(this);
     this.onKeyPress = this.onKeyPress.bind(this);
   }
 
-  checkIfAuthenticatet() {
+  async checkIfAuthenticatet() {
+    let isauth = false;
     const session = localStorage.getItem("session");
-    if (session === "234lafdja83lahdf00ahjh4") {
-      return true;
+    try {
+      var hash = "$2a$10$LcRPoM/3q4eHnqYjQqLuN.9fO.oY8p1scDoLdH0oGbNOp4eWd8lWK";
+      isauth = bcrypt.compareSync(session, hash);
+    } catch {
+      return false;
     }
-    return false;
+
+    if (isauth) {
+      this.props.auth.authenticated = true;
+      this.props.setisauth(true);
+      this.props.props.history.push("/tasks");
+    } else {
+      this.props.auth.authenticated = false;
+      this.props.setisauth(false);
+      this.props.props.history.push("/");
+    }
   }
 
   handleClose(event, reason) {
@@ -61,12 +71,6 @@ export default class Loginpage extends Component {
         });
       }
     });
-  }
-
-  onKeyPress(e) {
-    if (e.key === "Enter") {
-      this.onsubmit();
-    }
   }
 
   render() {

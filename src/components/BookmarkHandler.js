@@ -11,7 +11,9 @@ export default function BookmarkHandler() {
     fetchBookmarks();
   }, []);
   async function fetchBookmarks() {
-    const response = await fetch("https://localwebapi.herokuapp.com/bookmarks");
+    const response = await fetch(
+      `https://${process.env.REACT_APP_API}/bookmarks`
+    );
     let jsonData;
     try {
       jsonData = await response.json();
@@ -57,7 +59,7 @@ export default function BookmarkHandler() {
   async function editBookmark(obj, name) {
     console.log(`changing bookmark to ${name} ${obj.id}`);
     const body = { name: name, id: obj.id };
-    await fetch("https://localwebapi.herokuapp.com/bookmarks", {
+    await fetch(`https://${process.env.REACT_APP_API}/bookmarks`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -71,7 +73,7 @@ export default function BookmarkHandler() {
     let isfolder = "false";
     const body = { link, folder, isfolder };
     console.log(body);
-    await fetch("https://localwebapi.herokuapp.com/bookmarks/add", {
+    await fetch(`https://${process.env.REACT_APP_API}/bookmarks/add`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -80,9 +82,12 @@ export default function BookmarkHandler() {
   }
   async function deleteBookmark(obj) {
     try {
-      await fetch(`https://localwebapi.herokuapp.com/bookmarks/${obj["id"]}`, {
-        method: "DELETE",
-      });
+      await fetch(
+        `https://${process.env.REACT_APP_API}/bookmarks/${obj["id"]}`,
+        {
+          method: "DELETE",
+        }
+      );
     } catch (err) {
       console.error(err);
     }
@@ -95,7 +100,7 @@ export default function BookmarkHandler() {
     let isfolder = "true";
     const body = { link, folder, isfolder };
     console.log(body);
-    await fetch("https://localwebapi.herokuapp.com/bookmarks/add", {
+    await fetch(`https://${process.env.REACT_APP_API}/bookmarks/add`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -108,7 +113,7 @@ export default function BookmarkHandler() {
     const body = { id, name };
     try {
       const response = await fetch(
-        "https://localwebapi.herokuapp.com/delete/bookmarks",
+        `https://${process.env.REACT_APP_API}/delete/bookmarks`,
         {
           method: "delete",
           headers: { "Content-Type": "application/json" },
