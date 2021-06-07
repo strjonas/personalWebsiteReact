@@ -10,7 +10,6 @@ class Auth {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
-    let isRight = false;
     if (response.status === 200) {
       const res = await fetch(
         `https://${process.env.REACT_APP_API}/${process.env.REACT_APP_SEC}`
@@ -18,9 +17,8 @@ class Auth {
       const session = await res.json();
       localStorage.setItem("session", session);
       this.authenticated = true;
-      isRight = true;
     }
-    cb(isRight);
+    cb(response.status === 200);
   }
 
   logout(cb) {
