@@ -73,6 +73,12 @@ export default class Loginpage extends Component {
     });
   }
 
+  onKeyPress(e) {
+    if (e.key === "Enter") {
+      this.onsubmit();
+    }
+  }
+
   render() {
     return (
       <div>
