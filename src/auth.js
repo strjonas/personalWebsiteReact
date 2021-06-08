@@ -17,11 +17,12 @@ class Auth {
       const session = await res.json();
       if (session === "nice try") {
         cb(false);
+      } else {
+        localStorage.setItem("session", session);
+        this.authenticated = true;
+        cb(response.status === 200);
       }
-      localStorage.setItem("session", session);
-      this.authenticated = true;
     }
-    cb(response.status === 200);
   }
 
   logout(cb) {
