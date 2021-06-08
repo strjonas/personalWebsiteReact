@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import auth from "./auth";
-
+import bcrypt from "bcryptjs";
 export const ProtectedRoute = ({ component: Component, ...rest }) => {
   let isauth;
   const session = localStorage.getItem("session");
