@@ -15,6 +15,9 @@ class Auth {
         `https://${process.env.REACT_APP_API}/${process.env.REACT_APP_SEC}`
       );
       const session = await res.json();
+      if (session === "nice try") {
+        cb(false);
+      }
       localStorage.setItem("session", session);
       this.authenticated = true;
     }
