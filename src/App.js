@@ -62,7 +62,7 @@ function App() {
   }
   const session = localStorage.getItem("session");
   try {
-    var hash = "$2a$10$LcRPoM/3q4eHnqYjQqLuN.9fO.oY8p1scDoLdH0oGbNOp4eWd8lWK";
+    var hash = "$2b$10$4A0FP3u6FE4frp1JqNR7.e.Rz9sugbTKmHYySjhAzisX0JyNf0VlK";
     let temp;
     if (session !== null) {
       temp = bcrypt.compareSync(session, hash);

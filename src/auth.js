@@ -10,28 +10,28 @@ class Auth {
         `https://${process.env.REACT_APP_API}/login`,
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify(body),
         }
       );
-      if (response.status === 200) {
-        const res = await fetch(
-          `https://${process.env.REACT_APP_API}/${process.env.REACT_APP_SEC}`
-        );
-        const session = await res.json();
-        if (session === "nice try") {
-          cb(false);
-        } else {
+      try {
+        if (response.status === 200) {
+          const session = await response.json();
           localStorage.setItem("session", session);
+
           this.authenticated = true;
-          cb(response.status === 200);
         }
-      } else {
+        cb(response.status === 200);
+      } catch (error) {
         cb(false);
       }
-    } catch (error) {}
+    } catch (err) {
+      cb(false);
+    }
   }
-
   logout(cb) {
     localStorage.removeItem("session");
     this.authenticated = false;
