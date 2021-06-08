@@ -26,6 +26,8 @@ class Auth {
           this.authenticated = true;
           cb(response.status === 200);
         }
+      } else {
+        cb(false);
       }
     } catch (error) {}
   }
