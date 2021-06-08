@@ -4,25 +4,30 @@ class Auth {
   }
 
   async login(password, cb) {
-    const body = { password };
-    const response = await fetch(`https://${process.env.REACT_APP_API}/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-    if (response.status === 200) {
-      const res = await fetch(
-        `https://${process.env.REACT_APP_API}/${process.env.REACT_APP_SEC}`
+    try {
+      const body = { password };
+      const response = await fetch(
+        `https://${process.env.REACT_APP_API}/login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        }
       );
-      const session = await res.json();
-      if (session === "nice try") {
-        cb(false);
-      } else {
-        localStorage.setItem("session", session);
-        this.authenticated = true;
-        cb(response.status === 200);
+      if (response.status === 200) {
+        const res = await fetch(
+          `https://${process.env.REACT_APP_API}/${process.env.REACT_APP_SEC}`
+        );
+        const session = await res.json();
+        if (session === "nice try") {
+          cb(false);
+        } else {
+          localStorage.setItem("session", session);
+          this.authenticated = true;
+          cb(response.status === 200);
+        }
       }
-    }
+    } catch (error) {}
   }
 
   logout(cb) {
