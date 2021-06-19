@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import Footer from "./components/Footer";
 import Pastebins from "./components/Pastebins";
 
-const backendPath = "https://${process.env.REACT_APP_API}";
-
 export default class PastebinHandler extends Component {
   constructor(props) {
     super(props);

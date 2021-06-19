@@ -2,13 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { firebaseApp } from "./../base";
 import { Configuration } from "@react-md/layout";
-import { Grid, GridCell, useGridListSize } from "@react-md/utils";
+import { Grid, GridCell } from "@react-md/utils";
 import PictureCell from "./PictureCell";
 import Footer from "./Footer";
 
 export default function PhotoHandler() {
   const [pictures, setPictures] = useState([]);
-  const { columns, cellWidth } = useGridListSize();
   const overrides = {};
 
   useEffect(() => getPictures(), []);

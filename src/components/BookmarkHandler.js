@@ -112,14 +112,11 @@ export default function BookmarkHandler() {
     const name = obj.link;
     const body = { id, name };
     try {
-      const response = await fetch(
-        `https://${process.env.REACT_APP_API}/delete/bookmarks`,
-        {
-          method: "delete",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        }
-      );
+      await fetch(`https://${process.env.REACT_APP_API}/delete/bookmarks`, {
+        method: "delete",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
       await fetchBookmarks();
     } catch (error) {
       console.log(error);

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   MdKeyboardArrowRight,
-  MdFolder,
   MdDelete,
   MdContentCopy,
   MdClose,

@@ -1,6 +1,6 @@
 import { GridListCell } from "@react-md/utils";
 import React from "react";
-import { MdDelete, MdContentCopy, MdFileDownload } from "react-icons/md";
+import { MdDelete, MdFileDownload } from "react-icons/md";
 
 export default function PictureCell({ obj, deletePicture }) {
   const picture = obj;

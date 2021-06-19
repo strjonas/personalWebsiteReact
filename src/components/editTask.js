@@ -2,7 +2,12 @@ import React, { Fragment, useState } from "react";
 import { MdModeEdit } from "react-icons/md";
 
 const EditTodo = ({ obj, updateTask }) => {
-  const [inhalt, setinhalt] = useState(obj.inhalt);
+  const [inhalt, setinhalt] = useState(
+    obj.inhalt
+      .replaceAll("<em>", "***")
+      .replaceAll("<strong>", "**")
+      .replaceAll("<u>", "&&")
+  );
   if (inhalt === null) setinhalt("");
   const updateinhalt = async (e) => {
     e.preventDefault();

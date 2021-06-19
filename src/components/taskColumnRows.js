@@ -39,6 +39,12 @@ export default function TaskColumnRows({
 
   if (updateTask === null) updateTask = undefined;
   if (objectRowCon === null) objectRowCon = undefined;
+  objectRows["inhalt"] = objectRows["inhalt"]
+
+    .replaceAll(";", "")
+    .replaceAll("***", "<em>")
+    .replaceAll("**", "<strong>")
+    .replaceAll("&&", "<u>");
   if (!objectRowCon["gmacht"]) {
     icon = (
       <EditTodo
@@ -48,15 +54,17 @@ export default function TaskColumnRows({
       />
     );
     crossedOrNot = (
-      <div onClick={donetoggle} className="divtextrow">
-        {objectRows["inhalt"]}
-      </div>
+      <div
+        dangerouslySetInnerHTML={{ __html: objectRows["inhalt"] }}
+        onClick={donetoggle}
+        className="divtextrow"
+      ></div>
     );
   } else {
     icon = <MdDelete onClick={removeTaskhere} className="icon-Button" />;
     crossedOrNot = (
       <div onClick={donetoggle} className="divtextrow">
-        <del>{objectRows["inhalt"]}</del>
+        <del dangerouslySetInnerHTML={{ __html: objectRows["inhalt"] }}></del>
       </div>
     );
   }

@@ -20,6 +20,7 @@ export class DateRows extends Component {
       CatList: [],
       rawData: [{}],
       columns: Math.floor((window.innerWidth - 65) / 360),
+      api: process.env.REACT_APP_API || "localwebapi.herokuapp.com",
     };
 
     window.addEventListener("resize", () => {
@@ -138,9 +139,7 @@ export class DateRows extends Component {
 
   async getTasks() {
     try {
-      const response = await fetch(
-        `https://${process.env.REACT_APP_API}/tasks`
-      );
+      const response = await fetch(`https://${this.state.api}/tasks`);
       const jsonData = await response.json();
       this.state.rawData = jsonData;
       if (jsonData !== undefined) {
@@ -152,7 +151,7 @@ export class DateRows extends Component {
   }
 
   async returnTasks() {
-    const response = await fetch(`https://${process.env.REACT_APP_API}/tasks`);
+    const response = await fetch(`https://${this.state.api}/tasks`);
     const jsonData = await response.json();
     return jsonData;
   }
@@ -179,7 +178,7 @@ export class DateRows extends Component {
       try {
         let inhalt = task;
         const body = { kategorie, inhalt, gmacht };
-        await fetch(`https://${process.env.REACT_APP_API}/tasks`, {
+        await fetch(`https://${this.state.api}/tasks`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
@@ -194,7 +193,7 @@ export class DateRows extends Component {
 
   async removeTask(id) {
     try {
-      await fetch(`https://${process.env.REACT_APP_API}/tasks/${id["id"]}`, {
+      await fetch(`https://${this.state.api}/tasks/${id["id"]}`, {
         method: "DELETE",
       });
     } catch (err) {
@@ -213,7 +212,7 @@ export class DateRows extends Component {
     let id = result.draggableId;
     try {
       let body = { newkat: newkat, id: id };
-      await fetch(`https://${process.env.REACT_APP_API}/kategorie/tasks`, {
+      await fetch(`https://${this.state.api}/kategorie/tasks`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -240,7 +239,7 @@ export class DateRows extends Component {
     }
     try {
       let body = { os: os, od: od };
-      await fetch(`https://${process.env.REACT_APP_API}/switch/tasks`, {
+      await fetch(`https://${this.state.api}/switch/tasks`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -256,8 +255,12 @@ export class DateRows extends Component {
       if (newInhalt.includes(";")) {
         return;
       }
+      newInhalt = newInhalt
+        .replaceAll("<em>", "***")
+        .replaceAll("<strong>", "**")
+        .replaceAll("<u>", "&&");
       const body = { newInhalt };
-      await fetch(`https://${process.env.REACT_APP_API}/tasks/${obj["id"]}`, {
+      await fetch(`https://${this.state.api}/tasks/${obj["id"]}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -271,9 +274,7 @@ export class DateRows extends Component {
 
   async getCatList() {
     try {
-      const response = await fetch(
-        `https://${process.env.REACT_APP_API}/tasks/cats`
-      );
+      const response = await fetch(`https://${this.state.api}/tasks/cats`);
       try {
         const jsonData = await response.json();
         let liste = jsonData[0]["liste"];
@@ -299,7 +300,7 @@ export class DateRows extends Component {
       let newListe = temp.join("/");
       const body = { newListe: newListe };
 
-      await fetch(`https://${process.env.REACT_APP_API}/tasks/cats/add`, {
+      await fetch(`https://${this.state.api}/tasks/cats/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -324,7 +325,7 @@ export class DateRows extends Component {
 
       console.log(newListe);
       const body = { newListe: newListe };
-      await fetch(`https://${process.env.REACT_APP_API}/tasks/cats/add`, {
+      await fetch(`https://${this.state.api}/tasks/cats/add`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -340,14 +341,11 @@ export class DateRows extends Component {
     gmacht ? (param = "FALSE") : (param = "TRUE");
     const body = { param };
     try {
-      await fetch(
-        `https://${process.env.REACT_APP_API}/tasks/state/${obj["id"]}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        }
-      );
+      await fetch(`https://${this.state.api}/tasks/state/${obj["id"]}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
     } catch (error) {
       console.error(error);
     }
@@ -358,7 +356,7 @@ export class DateRows extends Component {
     try {
       const body = { kategorie };
       await this.deleteCat(kategorie);
-      await fetch(`https://${process.env.REACT_APP_API}/all/tasks`, {
+      await fetch(`https://${this.state.api}/all/tasks`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

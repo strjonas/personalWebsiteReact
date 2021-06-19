@@ -6,17 +6,15 @@ class Auth {
   async login(password, cb) {
     try {
       const body = { password };
-      const response = await fetch(
-        `https://${process.env.REACT_APP_API}/login`,
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-        }
-      );
+      let api = process.env.REACT_APP_API || "localwebapi.herokuapp.com";
+      const response = await fetch(`https://${api}/login`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
       try {
         if (response.status === 200) {
           const session = await response.json();
